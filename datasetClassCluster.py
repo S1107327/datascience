@@ -27,4 +27,7 @@ no_dots = [x.replace(".", "") for x in complete["domain"]]
 bigrams_column = [" ".join([x[i:i+2] for i in range(0, len(x)-1, 1)]) for x in no_dots]
 complete['no_dots'] = pd.Series(no_dots)
 complete['bigrams'] = pd.Series(bigrams_column)
-complete.to_csv('example_dataset.csv', index=False)
+#complete.to_csv('example_dataset.csv', index=False)
+with open("bigrams.txt", 'w') as fout:
+    for name in complete['bigrams']:
+        fout.write(f"{name}\n")
