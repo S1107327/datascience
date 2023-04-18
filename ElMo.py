@@ -7,7 +7,7 @@ import numpy as np
 tf.disable_eager_execution()
 dataset = pd.read_csv("example_dataset.csv")
 # Load pre trained ELMo model
-elmo = hub.Module("ELMo")
+elmo = hub.Module("https://tfhub.dev/google/elmo/3", trainable=True)
 embedded = elmo(dataset['no_dots'], signature="default", as_dict=True)
 init = tf.global_variables_initializer()
 sess = tf.Session()
