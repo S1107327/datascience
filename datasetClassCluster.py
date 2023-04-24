@@ -7,14 +7,16 @@ with open("./legit/list/5000.txt", "r") as fin:
         line = fin.readline().strip('\n')
 
 labels = [0 for i in range(5000)]
-
-legit_df = pd.DataFrame({'label': pd.Series(labels),'label_multiclass': pd.Series(labels), 'domain': pd.Series(legit)})
+labels_legit_multiclass = ["legit" for i in range(5000)]
+legit_df = pd.DataFrame({'label': pd.Series(labels),'label_multiclass': pd.Series(labels_legit_multiclass), 'domain': pd.Series(legit)})
 
 # dga part
 dga = []
 labels_dga = [1 for i in range(5000)]
-labels_dga_families = [1 for i in range(
-    1000)]+[2 for i in range(1000)]+[3 for i in range(1000)]+[4 for i in range(1000)]+[5 for i in range(1000)]
+labels_dga_families = ["cryptolocker" for i in range(
+    1000)]+["dircrypt" for i in range(1000)]+["dyre" for i in range(1000)]+["padcrypt" for i in range(1000)]+["zeus-newgoz" for i in range(1000)]
+
+
 
 for family in ["cryptolocker", "dircrypt", "dyre", "padcrypt", "zeus-newgoz"]:
     with open(f"./{family}/list/1000.txt", "r") as fin:
