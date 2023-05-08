@@ -19,6 +19,7 @@ labels_dga_families = ["cryptolocker" for i in range(
 
 
 for family in ["cryptolocker", "dircrypt", "dyre", "padcrypt", "zeus-newgoz"]:
+#for family in ["ramnit", "necurs", "dircrypt", "nymaim", "zeus-newgoz"]:
     with open(f"./{family}/list/1000.txt", "r") as fin:
         line = fin.readline().strip('\n')
         while line:
@@ -31,7 +32,7 @@ no_dots = [x.replace(".", "") for x in complete["domain"]]
 bigrams_column = [" ".join([x[i:i+2] for i in range(0, len(x)-1, 1)]) for x in no_dots]
 complete['no_dots'] = pd.Series(no_dots)
 complete['bigrams'] = pd.Series(bigrams_column)
-complete.to_csv('example_dataset.csv', index=False)
+complete.to_csv('example_dataset2.csv', index=False)
 '''
 with open("bigrams.txt", 'w') as fout:
     for name in complete['bigrams']:
