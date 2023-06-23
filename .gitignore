@@ -16,3 +16,4 @@ bigrams.txt
 sp500_stocks.csv
 sp500_index.csv
 sp500_companies.csv
+rasa/models
