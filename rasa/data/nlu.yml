@@ -16,6 +16,7 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
+    - yo
 
 - intent: goodbye
   examples: |
@@ -32,12 +33,12 @@ nlu:
 
 - intent: affirm
   examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
 
 - intent: deny
   examples: |
@@ -51,41 +52,158 @@ nlu:
 
 - intent: mood_great
   examples: |
-    - perfect
-    - great
+    - I am happy
+    - I feel great
+    - I'm fine
+    - I had a great day
+    - Me, wonderful!
+    - I am amazed
+    - You are too cool
+    - I am loving it
+    - I am starting to like this
+    - I am feeling great
+    - Doing fine
+    - Never better
+    - Feeling lucky
+    - All great here
+    - Fantastic day
+    - What a great day
+    - I'm inspired
+    - It's perfect
     - amazing
-    - feeling like a king
-    - wonderful
+    - I feel wonderful
     - I am feeling very good
     - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+    - I'm good
+    - I'm feeling awesome
+    - I'm feeling happy
+    - Today is an awesome day!
+    - I'm so glad
+    - I'm just really happy right now
 
 - intent: mood_unhappy
   examples: |
-    - my day was horrible
     - I am sad
     - I don't feel very well
     - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
+    - my day was horrible
+    - This is bad
+    - I am sick
+    - I am ill
+    - I am all low today
+    - Its dissapointing
+    - How irritating it is
+    - Am irritated
+    - I am not feeling well
+    - This sucks!
+    - I am feeling too bad
+    - Worst day ever!
+    - This feels bad
+    - I feel low
+    - Everything is bad today
+    - I feel very sad
+    - Feels horrible
+    - This is depressing
+    - I am depressed
+    - I feel bored
+    - I am feeling bored
+    - life is boring
+    - I am feeling empty
+    - I feel useless
+    - aweful
+    - depressed
+    - heavy
+    - I am feeling quite lost
     - very sad
     - unhappy
-    - not good
+    - bad
+    - very bad
+    - awful
+    - terrible
     - not very good
-    - extremly sad
-    - so saad
+    - extremely sad
     - so sad
+    - Im feeling down
+    - I'm feeling sad
+    - Im feeling sad
+    - Im not okay
+    - Im feeling low
+    - Not good
+    - I'm awful
+    - I'm feeling very sad
+    - I'm uneasy
+    - Actually I'm not fine
+    - I'm not good
+    - I am as lonely as can be
+    - I am going through a rather rough time
+    - I'm grieving
+
+- intent: mood_bored
+  examples: |
+    - soo bored
+    - that was boring
+    - I'm bored
+    - bored
+    - boring
+    - I am getting bored
+    - Staying at home is boring
+    - very boring
+    - it bores me
+    - i had a slow day
+    - i am very bored
+    - Im kinda bored today
+    - I've never been more bored
+    - I was bored
+    - It's boring
+    - This is boring
+    - We're all bored
+    - It's very boring
+    - I'm already bored
+    - I'm bored out of my mind
 
 - intent: bot_challenge
-  examples: |
+  examples: | 
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: start
+  examples: |
+    - start
+    - open
+    - begin
+    - init
+
+- intent: stop
+  examples: |
+    - quit
+    - close
+    - stop
+
+- intent: out_of_scope
+  examples: |
+    - blablabla
+    - sadasdasdasd
+    - hmmmmm
+    - hahahahhaha
+    - i'm sleeping
+    - what's the wheather update
+    - aeijfpvefvkèdlv
+    - lmlmlmlm
+    - uecwjeèqrpo
+    - aaaaaaaaaaaa
+    - pppppppppp
+    - kkkkkkk
+    - smdcspkèsj
+
+- intent: restaurant_list
+  examples: | 
+    - Which restaurants are registered on the platform?
+    - I want a list of all restaurants
+    - restaurants
+    - List of all restaurants
+    - Tell me in which restaurants I can reserve a table
+    - Which restaurant are there?
+    - Show me all restaurants on the platform
+    - /restaurants

@@ -7,9 +7,21 @@ intents:
   - deny
   - mood_great
   - mood_unhappy
+  - mood_bored
   - bot_challenge
+  - start
+  - stop
+  - restaurant_list
 
 responses:
+
+  utter_start:
+    - text: "Welcome guest, I am Restaurant Bot, the new amazing service to make reservations in NY restaurants.
+             If you are not registered, I recommend you to create an account in order to leave reviews on restaurants
+             you visited. For more help you can type \"/help\""
+  utter_stop:
+    - text: "Thank you for choosing the service. Have a nice day!"
+
   utter_greet:
   - text: "Hey! How are you?"
 
@@ -28,6 +40,11 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+actions:
+  - action_restaurant_list
+  - action_reserve_table
+  - action_review_restaurant
 
 session_config:
   session_expiration_time: 60
