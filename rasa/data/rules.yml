@@ -26,3 +26,11 @@ rules:
   steps:
     - intent: restaurant_list
     - action: action_restaurant_list
+
+- rule: reservation form
+  steps:
+    - intent: reservation
+    - action: reservation_form
+    - active_loop: reservation_form
+    - active_loop: null
+    - action: utter_goodbye

@@ -207,3 +207,15 @@ nlu:
     - Which restaurant are there?
     - Show me all restaurants on the platform
     - /restaurants
+
+# Completare l'inserimento delle frasi per far partire la reservation
+- intent: reservation
+  examples: |
+    - Hello, I would like to make a reservation
+    - Could you please reserve a table
+    - I'd like to book a table
+    - I'd like to reserve a table
+    - Reserve a table
+    - Book a restaurant
+    - I'd like to book a restaurant
+
