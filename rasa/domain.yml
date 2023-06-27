@@ -12,13 +12,37 @@ intents:
   - start
   - stop
   - restaurant_list
+  - restaurant_info
+
+entities:
+- restaurant_name
+slots:
+  restaurant_name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: restaurant_name
+
+forms:
+  info_restaurant_form:
+    required_slots:
+        - restaurant_name
 
 responses:
 
   utter_start:
-    - text: "Welcome guest, I am Restaurant Bot, the new amazing service to make reservations in NY restaurants.
-             If you are not registered, I recommend you to create an account in order to leave reviews on restaurants
-             you visited. For more help you can type \"/help\""
+    - text: "Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and 
+              leave reviews in NY restaurants. In order to help you, use the below buttons to start
+              interacting"
+      buttons:
+        - title: "HELP"
+          payload: "/help"
+        - title: "RESTAURANTS"
+          payload: "/restaurant_list"
+          image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.frommers.com%2Fdestinations%2Fnew-york-city%2Fgetting-around&psig=AOvVaw3nISCGgFK8uuPKSFgK_PhR&ust=1687844980920000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKjcutae4P8CFQAAAAAdAAAAABAE"
+
+
   utter_stop:
     - text: "Thank you for choosing the service. Have a nice day!"
 
@@ -41,10 +65,32 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
+  utter_ask_info_restaurant_form_restaurant_name:
+  - text: "Which restaurant you want info about?"
+
+  utter_submit:
+    - text: "Got it!"
+  utter_restaurant_slots:
+    - text: "I will show you {restaurant_name} informations."
+
 actions:
+  - utter_start
+  - utter_stop
+  - utter_greet
+  - utter_cheer_up
+  - utter_did_that_help
+  - utter_happy
+  - utter_goodbye
+  - utter_iamabot
+  - utter_info_restaurant
+  - utter_restaurant_slots
+  - utter_ask_info_restaurant_form_restaurant_name
+  - utter_submit
   - action_restaurant_list
+  - action_info_restaurant
   - action_reserve_table
   - action_review_restaurant
+  - validate_info_restaurant_form
 
 session_config:
   session_expiration_time: 60

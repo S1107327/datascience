@@ -174,12 +174,14 @@ nlu:
     - open
     - begin
     - init
+    - /start
 
 - intent: stop
   examples: |
     - quit
     - close
     - stop
+    - /stop
 
 - intent: out_of_scope
   examples: |
@@ -206,4 +208,14 @@ nlu:
     - Tell me in which restaurants I can reserve a table
     - Which restaurant are there?
     - Show me all restaurants on the platform
-    - /restaurants
+    - /restaurant_list
+
+- intent: restaurant_info
+  examples: |
+    - I want to get more infos about a restaurant
+    - Can you give me more info about restaurants
+    - I want a detailed description of a restaurant
+    - /restaurant_info
+
+- intent: inrestaurantform
+    - I want info about [berkeley](restaurant_name)

@@ -28,3 +28,25 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+#- story: interactive_story_1
+#  steps:
+#  - intent: start
+#  - action: utter_start
+#  - intent: restaurant_list
+#  - action: action_restaurant_list
+#  - intent: restaurant_info
+#  - action: info_restaurant_form
+#  - active_loop: info_restaurant_form
+#  - slot_was_set:
+#    - requested_slot: restaurant_name
+#  - slot_was_set:
+#    - restaurant_name: prova
+#  - slot_was_set:
+#    - restaurant_name: berkely
+#  - slot_was_set:
+#    - restaurant_name: oliva's
+#  - slot_was_set:
+#    - requested_slot: null
+#  - active_loop: null
+#  - action: action_info_restaurant

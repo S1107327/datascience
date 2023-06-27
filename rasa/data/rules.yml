@@ -7,6 +7,28 @@ rules:
   - intent: start
   - action: utter_start
 
+- rule: Activate Restaurant Info Form
+  steps:
+  - intent: restaurant_info
+  - action: info_restaurant_form
+  - active_loop: info_restaurant_form
+
+- rule: Submit Restaurant Info Form
+  condition:
+  # Condition that form is active.
+  - active_loop: info_restaurant_form
+  steps:
+  # Form is deactivated
+  - action: info_restaurant_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  # The actions we want to run when the form is submitted.
+  - action: utter_submit
+  - action: utter_restaurant_slots
+  - action: action_info_restaurant
+
+
 - rule: End the conversation
   steps:
   - intent: stop
