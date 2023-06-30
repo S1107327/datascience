@@ -31,6 +31,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
+from rasa_sdk.events import AllSlotsReset, SlotSet
 
 class ActionShowRestaurant(Action):
     def name(self) -> Text:
@@ -76,6 +77,9 @@ class ActionReserveTable(Action):
         reservation['phone_number'] = tracker.get_slot("phone_number")
         mongo_db.save_reservation(reservation=reservation)
 
+        return [SlotSet("restaurant_name",None)]
+
+
 class ActionReviewRestaurant(Action):
     def name(self) -> Text:
         return "action_review_restaurant"
@@ -84,3 +88,4 @@ class ActionReviewRestaurant(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         pass
+

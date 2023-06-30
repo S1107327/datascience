@@ -218,4 +218,5 @@ nlu:
     - Reserve a table
     - Book a restaurant
     - I'd like to book a restaurant
+    - /reservation
 
