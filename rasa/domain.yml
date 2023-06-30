@@ -14,12 +14,15 @@ intents:
   - restaurant_list
   - restaurant_info
   - cuisine_list
+  - cuisine_form
   - reservation
+  - reservation_list
+  - reservation_list_phone
 
 # Decidere come sfruttare le entities
 entities:
-  - restaurant_name_info
   - restaurant_name_reservation
+  - cuisine
   - people_number
   - date
   - time
@@ -94,7 +97,7 @@ slots:
   phone_number:
     type: text
     mappings:
-    - type: from_text
+    - type: from_entity
       entity: phone_number
       conditions:
       - active_loop: reservation_form
@@ -121,7 +124,6 @@ responses:
     - text: "Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and 
               leave reviews in NY restaurants. In order to help you, use the below buttons to start
               interacting"
-      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/aa/b0/fd/caption.jpg?w=600&h=-1&s=1"
       buttons:
         - title: "HELP"
           payload: "/help"
@@ -157,11 +159,8 @@ responses:
   utter_ask_restaurant_name_info:
   - text: "Which restaurant you want info about?"
 
-  utter_submit:
+  utter_submit_info:
     - text: "Got it!"
-
-  utter_restaurant_slots:
-    - text: "I will show you {restaurant_name_info} informations."
 
 # Da qui sono indicate le domande che il bot fa per la form
   utter_ask_restaurant_name_reservation:
@@ -185,6 +184,9 @@ responses:
   utter_ask_phone_number:
   - text: "Phone number?"
 
+  utter_respond_reservations:
+    - text: "Sure! Tell me your phone number to get your reservation"
+
 actions:
   - utter_start
   - utter_stop
@@ -194,15 +196,18 @@ actions:
   - utter_happy
   - utter_goodbye
   - utter_iamabot
-  - utter_restaurant_slots
   - utter_ask_restaurant_name_info
   - utter_ask_restaurant_name_reservation
-  - utter_submit
+  - utter_submit_info
+  - utter_respond_reservations
   - action_restaurant_list
   - action_info_restaurant
   - action_reserve_table
   - action_review_restaurant
   - action_cuisines_list
+  - action_start
+  - action_restaurant_cuisine
+  - action_get_reservations
   - validate_info_restaurant_form
 
 session_config:

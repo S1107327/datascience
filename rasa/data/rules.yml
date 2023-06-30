@@ -1,33 +1,12 @@
 version: "3.1"
 
-rules:
 
+rules:
 - rule: Start the conversation
   steps:
   - intent: start
+  - action: action_start
   - action: utter_start
-
-- rule: Activate Restaurant Info Form
-  steps:
-  - intent: restaurant_info
-  - action: info_restaurant_form
-  - active_loop: info_restaurant_form
-
-- rule: Submit Restaurant Info Form
-  condition:
-  # Condition that form is active.
-  - active_loop: info_restaurant_form
-  steps:
-  # Form is deactivated
-  - action: info_restaurant_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  # The actions we want to run when the form is submitted.
-  - action: utter_submit
-  - action: utter_restaurant_slots
-  - action: action_info_restaurant
-
 
 - rule: End the conversation
   steps:
@@ -44,6 +23,7 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+# Rules for info function
 - rule: show restaurant list
   steps:
     - intent: restaurant_list
@@ -54,11 +34,52 @@ rules:
     - intent: cuisine_list
     - action: action_cuisines_list
 
-- rule: reservation form
+- rule: restaurant of a cuisine
+  steps:
+    - intent: cuisine_form
+    - action: action_restaurant_cuisine
+
+- rule: Activate Restaurant Info Form
+  steps:
+  - intent: restaurant_info
+  - action: info_restaurant_form
+  - active_loop: info_restaurant_form
+
+- rule: Submit Restaurant Info Form
+  condition:
+  - active_loop: info_restaurant_form
+  steps:
+  - action: info_restaurant_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_submit_info
+  - action: action_info_restaurant
+
+# Rules for reservation service
+- rule: Active Reservation form
   steps:
     - intent: reservation
     - action: reservation_form
     - active_loop: reservation_form
-    - active_loop: null
-    - action: action_reserve_table
-    - action: utter_goodbye
+
+- rule: Submit Reservation Form
+  condition:
+  - active_loop: reservation_form
+  steps:
+  - action: reservation_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_reserve_table
+  - action: utter_goodbye
+
+- rule: Asking for reservations
+  steps:
+    - intent: reservation_list
+    - action: utter_respond_reservations
+
+- rule: Phone number got
+  steps:
+    - intent: reservation_list_phone
+    - action: action_get_reservations

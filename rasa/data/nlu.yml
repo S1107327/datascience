@@ -199,6 +199,8 @@ nlu:
     - kkkkkkk
     - smdcspkèsj
 
+# PARTE INFORMATIVA
+
 - intent: restaurant_list
   examples: | 
     - Which restaurants are registered on the platform?
@@ -228,13 +230,61 @@ nlu:
     - Cuisines?
     - /cuisine_list
 
-# Completare l'inserimento delle frasi per far partire la reservation
+- intent: cuisine_form
+  examples: |
+    - Which restaurant with [American](cuisine) cuisine are available?
+    - Show me all restaurants for [Bakery](cuisine) cuisine
+    - List [Chinese](cuisine) cuisine restaurants
+    - Can you tell me which restaurant offers [Italian](cuisine) cuisine?
+    - I'm interested in knowing which diners offers [Turkish](cuisine) cuisine?
+    - I want all bar that offers [Irish](cuisine) dishes
+    - Tell me which fast foods are available for [Hamburgers](cuisine) 
+    - [Caribbean](cuisine) cuisine diners?
+
+- lookup: cuisine
+  examples: | 
+    - American
+    - Bagels/Pretzels
+    - Bakery
+    - Caribbean
+    - Chicken
+    - Chinese
+    - Continental
+    - Delicatessen
+    - Donuts
+    - Finnish
+    - Fish
+    - French
+    - Greek
+    - Hamburgers
+    - Ice Cream, Gelato, Yogurt, Ices
+    - Indian
+    - Irish
+    - Italian
+    - Jewish/Kosher
+    - Japanese
+    - Kebab
+    - Lebanese
+    - Mexican
+    - Pizza
+    - Poke
+    - Sandwiches/Salads/Mixed Buffet
+    - Steak
+    - Sushi
+    - Thai
+    - Turkish
+
+# PARTE DELLA PRENOTAZIONE DEI TAVOLI
+# TODO: Completare l'inserimento delle frasi per far partire la reservation
 - intent: reservation
   examples: |
     - Hello, I would like to make a reservation
     - Could you please reserve a table
     - I'd like to book a table
     - I'd like to reserve a table
+    - I want to make a reservations
+    - I'd like to make a reservations
+    - Please could you reserve a table for me.
     - Reserve a table
     - Book a restaurant
     - I'd like to book a restaurant
@@ -244,4 +294,31 @@ nlu:
     - Can I book a restaurant for breakfast?
     - /reservation
 
-# TODO: Aggiungere intent e tabella di lookup per mostrare ristoranti con una certa cucina
+- intent: reservation_list
+  examples: |
+    - Please can you tell me active reservation I have?
+    - Show me active reservations
+    - Which are my current reservations
+    - My reservations?
+    - Yo tell me my reservations
+    - Which are my booked table?
+    - Tables reserved?
+    - reservations
+    - Find all my reservations
+
+- regex: phone_number
+  examples: |
+    - \d{10}
+
+- intent: reservation_list_phone
+  examples: |
+    - My phone number is [3384023576](phone_number)
+    - [3517468901](phone_number)
+    - Yeah, my number is [3702365110](phone_number)
+    - yes, it is [3358190178](phone_number)
+    - My mobile phone number is [3342390145](phone_number)
+    - Number is [3317891265](phone_number)
+    - Find reservations for phone number [3451234000](phone_number)
+    - All reservation for [3669054698](phone_number)
+    - Tables reserved by [3387589012](phone_number)
+    - reservation for [3670912970](phone_number)

@@ -7,7 +7,20 @@ from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
 from rasa_sdk.events import SlotSet
 
+### START ACTIONS ###
+class ActionStart(Action):
+    def name(self) -> Text:
+        return "action_start"
 
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(image="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/aa/b0/fd/caption.jpg?w=600&h=-1&s=1")
+
+### INFO ACTIONS ###
 class ActionShowRestaurant(Action):
     def name(self) -> Text:
         return "action_restaurant_list"
@@ -40,7 +53,34 @@ class ActionShowCuisines(Action):
         dispatcher.utter_message(text=text_to_display)
 
         return []
-#TODO: Inserire validation campi della form di prenotazione di un tavolo
+
+class ActionRestaurantOfCuisine(Action, BaseException):
+    def name(self) -> Text:
+        return "action_restaurant_cuisine"
+
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        if len(tracker.latest_message['entities']):
+            cuisine = tracker.latest_message['entities'][0]['value']
+        else:
+            dispatcher.utter_message(text="I can't recognise this type of cuisine. Please check for any typo or spelling error")
+            return []
+        mongo_db = MongoDBConnector()
+        restaurants, count = mongo_db.get_restaurant_of_cuisine(cuisine)
+        if count == 0:
+            dispatcher.utter_message(text=f"There are no restaurants for {cuisine} cuisine in the service")
+        else:
+            text_to_display = f"Here are the restaurants of {cuisine} cuisine\n"
+            for restaurant in restaurants:
+                text_to_display += f"{restaurant['name']}\n"
+            dispatcher.utter_message(text=text_to_display)
+            return[]
+
+
 class ValidateRestaurantInfoForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_info_restaurant_form"
@@ -73,6 +113,7 @@ class ActionInfoRestaurant(Action):
         mongo_db = MongoDBConnector()
         restaurant_name = tracker.get_slot('restaurant_name_info')
         info_restaurant = mongo_db.get_restaurant_info(restaurant_name)
+        dispatcher.utter_message(text=f"I'll show you more info about {info_restaurant['name']}")
         address_dict = {"building": info_restaurant["address"]["building"],
                         "lon": f"{info_restaurant['address']['coord'][0]}",
                         "lat": f"{info_restaurant['address']['coord'][1]}",
@@ -89,6 +130,8 @@ class ActionInfoRestaurant(Action):
         dispatcher.utter_message(text=text_to_display)
         return [SlotSet("restaurant_name_info", None)]
 
+### RESERVATIONS ACTIONS ###
+#TODO: Inserire validation campi della form di prenotazione di un tavolo
 class ActionReserveTable(Action):
     def name(self) -> Text:
         return "action_reserve_table"
@@ -109,7 +152,26 @@ class ActionReserveTable(Action):
         #TODO: Inserire messaggio conferma prenotazione
         return [SlotSet("restaurant_name_reservation",None)]
 
+class ActionShowReservations(Action):
+    def name(self) -> Text:
+        return "action_get_reservations"
 
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        client = tracker.latest_message['entities'][0]['value']
+        mongo_db = MongoDBConnector()
+        reservations = mongo_db.get_active_client_reservations(client)
+        text_to_display = f"Here are reservations for {client}\n"
+        for reservation in reservations:
+            if int(reservation['people_number']) > 1:
+                text_to_display += f"{reservation['name']} for {reservation['people_number']} people {reservation['date']} at {reservation['time']}\n Name: {reservation['name']}\n"
+            else:
+                text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Name: {reservation['name']}\n"
+        dispatcher.utter_message(text=text_to_display)
 class ActionReviewRestaurant(Action):
     def name(self) -> Text:
         return "action_review_restaurant"
