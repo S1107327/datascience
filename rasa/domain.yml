@@ -14,24 +14,106 @@ intents:
   - restaurant_list
   - restaurant_info
   - cuisine_list
+  - reservation
 
+# Decidere come sfruttare le entities
 entities:
-- restaurant_name
+  - restaurant_name_info
+  - restaurant_name_reservation
+  - people_number
+  - date
+  - time
+  - allergies
+  - name
+  - phone_number
+
 slots:
-  restaurant_name:
+  restaurant_name_info:
     type: text
-    influence_conversation: true
     mappings:
     - type: from_text
-      entity: restaurant_name
+      entity: restaurant_name_info
       conditions:
       - active_loop: info_restaurant_form
-        requested_slot: restaurant_name
+        requested_slot: restaurant_name_info
+
+  restaurant_name_reservation:
+    type: text
+    mappings:
+    - type: from_text
+      entity: restaurant_name_reservation
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: restaurant_name_reservation
+
+  people_number:
+    type: float
+    mappings:
+    - type: from_text
+      entity: people_number
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: people_number
+
+  date:
+    type: text
+    mappings:
+    - type: from_text
+      entity: date
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: date
+
+  time:
+    type: text
+    mappings:
+    - type: from_text
+      entity: time
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: time
+
+  allergies:
+    type: text
+    mappings:
+    - type: from_text
+      entity: allergies
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: allergies
+
+  name:
+    type: text
+    mappings:
+    - type: from_text
+      entity: name
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: name
+
+  phone_number:
+    type: text
+    mappings:
+    - type: from_text
+      entity: phone_number
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: phone_number
 
 forms:
+  reservation_form:
+    required_slots:
+      - restaurant_name_reservation
+      - people_number
+      - date 
+      - time 
+      - allergies
+      - name 
+      - phone_number 
+
   info_restaurant_form:
     required_slots:
-        - restaurant_name
+        - restaurant_name_info
 
 responses:
 
@@ -72,7 +154,7 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_ask_restaurant_name:
+  utter_ask_restaurant_name_info:
   - text: "Which restaurant you want info about?"
 
   utter_submit:
@@ -80,6 +162,28 @@ responses:
 
   utter_restaurant_slots:
     - text: "I will show you {restaurant_name} informations."
+
+# Da qui sono indicate le domande che il bot fa per la form
+  utter_ask_restaurant_name_reservation:
+  - text: "Restaurant name?"
+
+  utter_ask_people_number:
+  - text: "How many people would you like to reserve for?"
+
+  utter_ask_date:
+  - text: "On what day would you like to make the reservation?"
+
+  utter_ask_time:
+  - text: "What time would you like to make the reservation?"
+
+  utter_ask_allergies:
+  - text: "Do you have any allergies?"
+
+  utter_ask_name:
+  - text: "Please, may you tell me your name for the reservation?"
+
+  utter_ask_phone_number:
+  - text: "Phone number?"
 
 actions:
   - utter_start
@@ -91,7 +195,8 @@ actions:
   - utter_goodbye
   - utter_iamabot
   - utter_restaurant_slots
-  - utter_ask_restaurant_name
+  - utter_ask_restaurant_name_info
+  - utter_ask_restaurant_name_reservation
   - utter_submit
   - action_restaurant_list
   - action_info_restaurant

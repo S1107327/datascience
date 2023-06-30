@@ -19,3 +19,5 @@ sp500_companies.csv
 rasa/models
 rasa/.rasa/
 rasa/.rasa/cache/
+rasa/actions/__pycache__/*
+mongodb/__pycache__/*

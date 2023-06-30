@@ -53,3 +53,12 @@ rules:
   steps:
     - intent: cuisine_list
     - action: action_cuisines_list
+
+- rule: reservation form
+  steps:
+    - intent: reservation
+    - action: reservation_form
+    - active_loop: reservation_form
+    - active_loop: null
+    - action: action_reserve_table
+    - action: utter_goodbye

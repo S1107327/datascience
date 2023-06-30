@@ -33,6 +33,7 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
+from rasa_sdk.events import AllSlotsReset, SlotSet
 
 
 class ActionShowRestaurant(Action):
@@ -86,8 +87,8 @@ class ValidateRestaurantInfoForm(FormValidationAction):
             restaurant_name_list.append(str(restaurant['name']).lower())
         if slot_value.lower() not in restaurant_name_list:
             dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service")
-            return {"restaurant_name": None}
-        return {"restaurant_name": slot_value}
+            return {"restaurant_name_info": None}
+        return {"restaurant_name_info": slot_value}
 
 
 class ActionInfoRestaurant(Action):
@@ -114,7 +115,8 @@ class ActionInfoRestaurant(Action):
             text_to_display += f"{k}: {v}\n"
         text_to_display += f"View it on Google Maps: https://www.google.com/maps/search/?api=1&query={address_dict['lat']}%2C{address_dict['lon']}"
         dispatcher.utter_message(text=text_to_display)
-        return [SlotSet("restaurant_name", None)]
+        return [SlotSet("restaurant_name_info", None)]
+
 class ActionReserveTable(Action):
     def name(self) -> Text:
         return "action_reserve_table"
@@ -122,7 +124,19 @@ class ActionReserveTable(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        pass
+        mongo_db = MongoDBConnector()
+        reservation = {}
+        reservation['restaurant_name'] = tracker.get_slot("restaurant_name_reservation")
+        reservation['people_number'] = tracker.get_slot("people_number")
+        reservation['date'] = tracker.get_slot("date")
+        reservation['time'] = tracker.get_slot("time")
+        reservation['allergies'] = tracker.get_slot("allergies")
+        reservation['name'] = tracker.get_slot("name")
+        reservation['phone_number'] = tracker.get_slot("phone_number")
+        mongo_db.save_reservation(reservation=reservation)
+
+        return [SlotSet("restaurant_name_reservation",None)]
+
 
 class ActionReviewRestaurant(Action):
     def name(self) -> Text:
@@ -132,3 +146,4 @@ class ActionReviewRestaurant(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         pass
+
