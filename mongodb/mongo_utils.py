@@ -11,7 +11,7 @@ class MongoDBConnector:
     def get_restaurant_names_list(self):
         restaurants = self.client['rasa_db']['restaurants'].find({}, {"name": 1})
         return restaurants
-
+    #TODO: inserire metodo per prendere i primi cinque ristoranti per valutazione media
     def get_cuisines(self):
         cuisines = self.client['rasa_db']['restaurants'].find({}, {"cuisine": 1}).distinct('cuisine')
         return cuisines
@@ -21,9 +21,9 @@ class MongoDBConnector:
         return restaurant_info
 
 
-    def save_reservation(self, reservation):
-        restaurant_name = reservation['restaurant_name']
-        restaurant_id = self.client['rasa_db']['restaurants'].find_one({"name":restaurant_name},{"_id":0,'restaurant_id':1})
-        reservation['restaurant_id'] = restaurant_id['restaurant_id']
+    def save_reservation(self, name, reservation):
+        restaurant = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)},{"_id":0,'restaurant_id':1, "name":1})
+        reservation['restaurant_id'] = restaurant['restaurant_id']
+        reservation['restaurant_name'] = restaurant['name']
         collection=self.client['rasa_db']["reservation"]
         collection.insert_one(reservation)

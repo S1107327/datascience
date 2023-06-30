@@ -1,39 +1,11 @@
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
-import json
 import sys
 sys.path.append("../")
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
-from rasa_sdk.events import SlotSet
 from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
-from rasa_sdk.events import AllSlotsReset, SlotSet
+from rasa_sdk.events import SlotSet
 
 
 class ActionShowRestaurant(Action):
@@ -68,12 +40,12 @@ class ActionShowCuisines(Action):
         dispatcher.utter_message(text=text_to_display)
 
         return []
-
+#TODO: Inserire validation campi della form di prenotazione di un tavolo
 class ValidateRestaurantInfoForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_info_restaurant_form"
 
-    def validate_restaurant_name(
+    def validate_restaurant_name_info(
         self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,
@@ -99,7 +71,7 @@ class ActionInfoRestaurant(Action):
         tracker: Tracker,
         domain: "Dict[Text, Any]",) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
-        restaurant_name = tracker.get_slot('restaurant_name')
+        restaurant_name = tracker.get_slot('restaurant_name_info')
         info_restaurant = mongo_db.get_restaurant_info(restaurant_name)
         address_dict = {"building": info_restaurant["address"]["building"],
                         "lon": f"{info_restaurant['address']['coord'][0]}",
@@ -126,15 +98,15 @@ class ActionReserveTable(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
         reservation = {}
-        reservation['restaurant_name'] = tracker.get_slot("restaurant_name_reservation")
+        name = tracker.get_slot("restaurant_name_reservation")
         reservation['people_number'] = tracker.get_slot("people_number")
         reservation['date'] = tracker.get_slot("date")
         reservation['time'] = tracker.get_slot("time")
         reservation['allergies'] = tracker.get_slot("allergies")
         reservation['name'] = tracker.get_slot("name")
         reservation['phone_number'] = tracker.get_slot("phone_number")
-        mongo_db.save_reservation(reservation=reservation)
-
+        mongo_db.save_reservation(name, reservation)
+        #TODO: Inserire messaggio conferma prenotazione
         return [SlotSet("restaurant_name_reservation",None)]
 
 

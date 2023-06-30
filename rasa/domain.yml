@@ -161,7 +161,7 @@ responses:
     - text: "Got it!"
 
   utter_restaurant_slots:
-    - text: "I will show you {restaurant_name} informations."
+    - text: "I will show you {restaurant_name_info} informations."
 
 # Da qui sono indicate le domande che il bot fa per la form
   utter_ask_restaurant_name_reservation:

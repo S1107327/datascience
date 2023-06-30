@@ -238,5 +238,10 @@ nlu:
     - Reserve a table
     - Book a restaurant
     - I'd like to book a restaurant
+    - Hey can you book a table for me?
+    - Please reserve me a table for dinner
+    - I must reserve a table for lunch
+    - Can I book a restaurant for breakfast?
     - /reservation
 
+# TODO: Aggiungere intent e tabella di lookup per mostrare ristoranti con una certa cucina
