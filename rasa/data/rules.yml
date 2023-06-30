@@ -33,4 +33,5 @@ rules:
     - action: reservation_form
     - active_loop: reservation_form
     - active_loop: null
+    - action: action_reserve_table
     - action: utter_goodbye

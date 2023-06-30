@@ -14,6 +14,7 @@ intents:
   - restaurant_list
   - reservation
 
+# Decidere come sfruttare le entities
 entities:
   - restaurant_name
   - people_number
@@ -34,7 +35,7 @@ slots:
         requested_slot: restaurant_name
 
   people_number:
-    type: text
+    type: float
     mappings:
     - type: from_text
       entity: people_number
@@ -42,11 +43,61 @@ slots:
       - active_loop: reservation_form
         requested_slot: people_number
 
+  date:
+    type: text
+    mappings:
+    - type: from_text
+      entity: date
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: date
+
+  time:
+    type: text
+    mappings:
+    - type: from_text
+      entity: time
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: time
+
+  allergies:
+    type: text
+    mappings:
+    - type: from_text
+      entity: allergies
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: allergies
+
+  name:
+    type: text
+    mappings:
+    - type: from_text
+      entity: name
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: name
+
+  phone_number:
+    type: text
+    mappings:
+    - type: from_text
+      entity: phone_number
+      conditions:
+      - active_loop: reservation_form
+        requested_slot: phone_number
+
 forms:
   reservation_form:
     required_slots:
       - restaurant_name
       - people_number
+      - date 
+      - time 
+      - allergies
+      - name 
+      - phone_number 
 
 responses:
 
@@ -82,6 +133,21 @@ responses:
 
   utter_ask_people_number:
   - text: "How many people would you like to reserve for?"
+
+  utter_ask_date:
+  - text: "On what day would you like to make the reservation?"
+
+  utter_ask_time:
+  - text: "What time would you like to make the reservation?"
+
+  utter_ask_allergies:
+  - text: "Do you have any allergies?"
+
+  utter_ask_name:
+  - text: "Please, may you tell me your name for the reservation?"
+
+  utter_ask_phone_number:
+  - text: "Phone number?"
 
 actions:
   - action_restaurant_list

@@ -65,7 +65,16 @@ class ActionReserveTable(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        pass
+        mongo_db = MongoDBConnector()
+        reservation = {}
+        reservation['restaurant_name'] = tracker.get_slot("restaurant_name")
+        reservation['people_number'] = tracker.get_slot("people_number")
+        reservation['date'] = tracker.get_slot("date")
+        reservation['time'] = tracker.get_slot("time")
+        reservation['allergies'] = tracker.get_slot("allergies")
+        reservation['name'] = tracker.get_slot("name")
+        reservation['phone_number'] = tracker.get_slot("phone_number")
+        mongo_db.save_reservation(reservation=reservation)
 
 class ActionReviewRestaurant(Action):
     def name(self) -> Text:
