@@ -30,6 +30,7 @@ sys.path.append("../")
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
+from rasa_sdk.events import SlotSet
 from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
 
@@ -47,10 +48,25 @@ class ActionShowRestaurant(Action):
         for restaurant in restaurant_json:
             text_to_display += f"{restaurant['name']}\n"
         dispatcher.utter_message(text=text_to_display,
-                                 buttons=[{"title": "MORE", "payload": "/restaurant_info"}])
+                                 buttons=[{"title": "INFO", "payload": "/restaurant_info"}])
 
         return []
 
+class ActionShowCuisines(Action):
+    def name(self) -> Text:
+        return "action_cuisines_list"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        mongo_db = MongoDBConnector()
+        cuisines = mongo_db.get_cuisines()
+        text_to_display = "There are these cuisines available in our restaurants\n"
+        for cuisine in cuisines:
+            text_to_display += f"{cuisine}\n"
+        dispatcher.utter_message(text=text_to_display)
+
+        return []
 
 class ValidateRestaurantInfoForm(FormValidationAction):
     def name(self) -> Text:
@@ -71,7 +87,6 @@ class ValidateRestaurantInfoForm(FormValidationAction):
         if slot_value.lower() not in restaurant_name_list:
             dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service")
             return {"restaurant_name": None}
-        dispatcher.utter_message(text=f"OK! I'll show you more info about {slot_value} restaurant.")
         return {"restaurant_name": slot_value}
 
 
@@ -87,19 +102,19 @@ class ActionInfoRestaurant(Action):
         info_restaurant = mongo_db.get_restaurant_info(restaurant_name)
         address_dict = {"building": info_restaurant["address"]["building"],
                         "lon": f"{info_restaurant['address']['coord'][0]}",
-                        "lat:": f"lat: {info_restaurant['address']['coord'][1]}",
+                        "lat": f"{info_restaurant['address']['coord'][1]}",
                         "street": info_restaurant["address"]["street"],
                         "zipcode": info_restaurant["address"]["zipcode"]}
-        mydict = {"name": info_restaurant['name'],
-                     "borough": info_restaurant['borough'],
-                     "address": f"{address_dict['street']}, {address_dict['zipcode']}, in building {address_dict['building']}",
-                     "cuisine": info_restaurant["cuisine"]}
+        mydict = {"Name": info_restaurant['name'],
+                     "Borough": info_restaurant['borough'],
+                     "Address": f"{address_dict['street']}, {address_dict['zipcode']}, in building {address_dict['building']}",
+                     "Cuisine": info_restaurant["cuisine"]}
         text_to_display = ""
         for k,v in mydict.items():
             text_to_display += f"{k}: {v}\n"
-        dispatcher.utter_message(text=text_to_display,
-                                 attachment=f"https://www.google.com/maps/search/?api=1&query={address_dict['lat']}%2C{address_dict['lon']}")
-
+        text_to_display += f"View it on Google Maps: https://www.google.com/maps/search/?api=1&query={address_dict['lat']}%2C{address_dict['lon']}"
+        dispatcher.utter_message(text=text_to_display)
+        return [SlotSet("restaurant_name", None)]
 class ActionReserveTable(Action):
     def name(self) -> Text:
         return "action_reserve_table"

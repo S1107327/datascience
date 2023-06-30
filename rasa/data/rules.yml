@@ -48,3 +48,8 @@ rules:
   steps:
     - intent: restaurant_list
     - action: action_restaurant_list
+
+- rule: show cuisine list
+  steps:
+    - intent: cuisine_list
+    - action: action_cuisines_list

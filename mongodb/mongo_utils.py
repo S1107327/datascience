@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import re
 
 class MongoDBConnector:
     def __init__(self):
@@ -11,6 +12,10 @@ class MongoDBConnector:
         restaurants = self.client['rasa_db']['restaurants'].find({}, {"name": 1})
         return restaurants
 
+    def get_cuisines(self):
+        cuisines = self.client['rasa_db']['restaurants'].find({}, {"cuisine": 1}).distinct('cuisine')
+        return cuisines
+
     def get_restaurant_info(self, name):
-        restaurant_info = self.client['rasa_db']['restaurants'].find({"name": name}).distinct("name")
+        restaurant_info = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)})
         return restaurant_info

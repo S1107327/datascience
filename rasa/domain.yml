@@ -13,6 +13,7 @@ intents:
   - stop
   - restaurant_list
   - restaurant_info
+  - cuisine_list
 
 entities:
 - restaurant_name
@@ -21,8 +22,11 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-    - type: from_entity
+    - type: from_text
       entity: restaurant_name
+      conditions:
+      - active_loop: info_restaurant_form
+        requested_slot: restaurant_name
 
 forms:
   info_restaurant_form:
@@ -35,12 +39,15 @@ responses:
     - text: "Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and 
               leave reviews in NY restaurants. In order to help you, use the below buttons to start
               interacting"
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/aa/b0/fd/caption.jpg?w=600&h=-1&s=1"
       buttons:
         - title: "HELP"
           payload: "/help"
         - title: "RESTAURANTS"
           payload: "/restaurant_list"
-          image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.frommers.com%2Fdestinations%2Fnew-york-city%2Fgetting-around&psig=AOvVaw3nISCGgFK8uuPKSFgK_PhR&ust=1687844980920000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKjcutae4P8CFQAAAAAdAAAAABAE"
+        - title: "CUISINES"
+          payload: "/cuisine_list"
+
 
 
   utter_stop:
@@ -65,11 +72,12 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_ask_info_restaurant_form_restaurant_name:
+  utter_ask_restaurant_name:
   - text: "Which restaurant you want info about?"
 
   utter_submit:
     - text: "Got it!"
+
   utter_restaurant_slots:
     - text: "I will show you {restaurant_name} informations."
 
@@ -82,14 +90,14 @@ actions:
   - utter_happy
   - utter_goodbye
   - utter_iamabot
-  - utter_info_restaurant
   - utter_restaurant_slots
-  - utter_ask_info_restaurant_form_restaurant_name
+  - utter_ask_restaurant_name
   - utter_submit
   - action_restaurant_list
   - action_info_restaurant
   - action_reserve_table
   - action_review_restaurant
+  - action_cuisines_list
   - validate_info_restaurant_form
 
 session_config:

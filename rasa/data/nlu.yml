@@ -217,5 +217,13 @@ nlu:
     - I want a detailed description of a restaurant
     - /restaurant_info
 
-- intent: inrestaurantform
-    - I want info about [berkeley](restaurant_name)
+- intent: cuisine_list
+  examples: |
+    - Can you tell me which cuisines are available?
+    - Show me all available cuisines
+    - Yo bro tell me what i can eat
+    - Please tell me which cuisines the restaurants offers
+    - Which are the available cuisines?
+    - What kind of cuisine offer restaurant in NY?
+    - Cuisines?
+    - /cuisine_list
