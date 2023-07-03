@@ -23,13 +23,17 @@ intents:
 - stop
 entities:
 - restaurant_name_reservation
+- restaurant_name_info
+- restaurant_name_review
 - cuisine
 - people_number
 - date
 - time
 - allergies
 - name
+- name_review
 - phone_number
+- review
 slots:
   restaurant_name_info:
     type: text
@@ -95,6 +99,38 @@ slots:
       conditions:
       - active_loop: reservation_form
         requested_slot: phone_number
+  review:
+    type: text
+    mappings:
+    - type: from_text
+      entity: review
+      conditions:
+      - active_loop: review_form
+        requested_slot: review
+    restaurant_name_review:
+    type: text
+    mappings:
+    - type: from_text
+      entity: restaurant_name_review
+      conditions:
+      - active_loop: review_form
+        requested_slot: restaurant_name_review   
+  name_review:
+    type: text
+    mappings:
+    - type: from_text
+      entity: name_review
+      conditions:
+      - active_loop: review_form
+        requested_slot: name_review
+  date_review:
+    type: text
+    mappings:
+    - type: from_text
+      entity: date_review
+      conditions:
+      - active_loop: review_form
+        requested_slot: date_review        
 forms:
   reservation_form:
     required_slots:
@@ -108,6 +144,12 @@ forms:
   info_restaurant_form:
     required_slots:
     - restaurant_name_info
+  review_form:
+    required_slots:
+    - restaurant_name_review
+    - name_review
+    - review
+    - date_review    
 responses:
   utter_start:
   - text: Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and leave reviews in NY restaurants. In order to help you, use the below buttons to start interacting
@@ -168,6 +210,12 @@ responses:
   - text: Well done! Your resevation has been confirmed
   utter_deny_reservation:
   - text: Reservation cancelled
+  utter_ask_restaurant_name_review:
+  - text: Which restaurant would you like to review?
+  utter_ask_review:
+  - text: "Please give us your review, we really value your feedback!"  
+  utter_ask_name_review:
+  - text: Please, may you tell us your name for the review?
 actions:
 - utter_reservation_stopped
 - action_clear_form_slots
@@ -186,6 +234,9 @@ actions:
 - utter_respond_reservations
 - utter_ask_reservation_confirm
 - utter_confirm_reservation
+- utter_ask_restaurant_name_review
+- utter_ask_review
+- utter_ask_name_review
 - action_restaurant_list
 - action_info_restaurant
 - action_reserve_table
@@ -194,9 +245,12 @@ actions:
 - action_start
 - action_restaurant_cuisine
 - action_get_reservations
+- action_get_reviews
 - action_show_reservation_info
+- action_show_review_info
 - validate_info_restaurant_form
 - validate_reservation_form
+- validate_review_form
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
