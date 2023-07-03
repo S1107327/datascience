@@ -33,7 +33,8 @@ entities:
 - name
 - name_review
 - phone_number
-- review
+- review_body
+- score_review
 slots:
   restaurant_name_info:
     type: text
@@ -99,14 +100,14 @@ slots:
       conditions:
       - active_loop: reservation_form
         requested_slot: phone_number
-  review:
+  review_body:
     type: text
     mappings:
     - type: from_text
-      entity: review
+      entity: review_body
       conditions:
       - active_loop: review_form
-        requested_slot: review
+        requested_slot: review_body
     restaurant_name_review:
     type: text
     mappings:
@@ -123,14 +124,15 @@ slots:
       conditions:
       - active_loop: review_form
         requested_slot: name_review
-  date_review:
+  score_review:
     type: text
     mappings:
     - type: from_text
-      entity: date_review
+      entity: score_review
       conditions:
       - active_loop: review_form
-        requested_slot: date_review        
+        requested_slot: score_review
+     
 forms:
   reservation_form:
     required_slots:
@@ -148,8 +150,8 @@ forms:
     required_slots:
     - restaurant_name_review
     - name_review
-    - review
-    - date_review    
+    - score_review
+    - review_body
 responses:
   utter_start:
   - text: Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and leave reviews in NY restaurants. In order to help you, use the below buttons to start interacting
@@ -213,9 +215,11 @@ responses:
   utter_ask_restaurant_name_review:
   - text: Which restaurant would you like to review?
   utter_ask_review:
-  - text: "Please give us your review, we really value your feedback!"  
+  - text: Please give us your review, we really value your feedback!
   utter_ask_name_review:
   - text: Please, may you tell us your name for the review?
+  utter_ask_score_review:
+  - text: From 1-5, how would you rate your experience at {restaurant_name_review}?  
 actions:
 - utter_reservation_stopped
 - action_clear_form_slots
@@ -237,6 +241,7 @@ actions:
 - utter_ask_restaurant_name_review
 - utter_ask_review
 - utter_ask_name_review
+- utter_ask_score_review
 - action_restaurant_list
 - action_info_restaurant
 - action_reserve_table

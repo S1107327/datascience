@@ -2,6 +2,7 @@ from re import template
 import sys
 from threading import current_thread
 sys.path.append("../")
+from datetime import date
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
@@ -302,15 +303,16 @@ class ActionReviewRestaurant(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
         review = {}
-        review['restaurant_name'] = tracker.get_slot("restaurant_name")
-        review['name'] = tracker.get_slot("name")
-        review['review'] = tracker.get_slot("review")
-        review['date_review'] = tracker.get_slot("date_review")
+        review['restaurant_name'] = tracker.get_slot("restaurant_name_review")
+        review['name'] = tracker.get_slot("name_review")
+        review['body'] =  tracker.get_slot("review_body")
+        review['date_review'] = date.today()
         mongo_db.save_review(review=review)
 
-        return [SlotSet("restaurant_name",None)]
+        return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None)]
     
 ##TODO: da implementare con stories##
+##TODO: prenderne solo 10
 
 class ActionShowReviews(Action):
     def name(self) -> Text:
@@ -322,13 +324,16 @@ class ActionShowReviews(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
-        client = tracker.latest_message['entities'][0]['value']
+        restaurant = tracker.latest_message['entities'][0]['value']
         mongo_db = MongoDBConnector()
-        reviews = mongo_db.get_client_reviews(client)
-        text_to_display = f"Here are reviews for {client}\n"
-        for review in reviews:     
-            text_to_display += f"{review['name']} for {review['restaurant_name_review']}, {review['date_review']}\n"
+        reviews = mongo_db.get_restaurant_reviews(restaurant)
+        text_to_display = f"Here are the 10 latest reviews for {restaurant}\n"
+        for review in reviews:
+            ##if     
+            text_to_display += f"{review['name']} for {review['restaurant_name']}, {review['date']}\n"
+            ##incremento contatore
         dispatcher.utter_message(text=text_to_display)
+
 
 class ActionShowReviewInfo(Action):
     def name(self) -> Text:
@@ -340,7 +345,6 @@ class ActionShowReviewInfo(Action):
         utter_text = "This are your review infos:\n"
         utter_text += f"Restaurant: {tracker.get_slot('restaurant_name_review')}\n"
         utter_text += f"Text: {tracker.get_slot('review')}\n"
-        utter_text += f"Date: {tracker.get_slot('date_review')}\n"
         utter_text += f"From: {tracker.get_slot('name_review')}\n"
         dispatcher.utter_message(text=utter_text)
 
