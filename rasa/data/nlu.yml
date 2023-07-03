@@ -1,5 +1,4 @@
 version: "3.1"
-
 nlu:
 - intent: greet
   examples: |
@@ -17,7 +16,6 @@ nlu:
     - goodevening
     - good afternoon
     - yo
-
 - intent: goodbye
   examples: |
     - cu
@@ -30,16 +28,14 @@ nlu:
     - see you around
     - bye bye
     - see you later
-
 - intent: affirm
   examples: |
-      - yes
-      - y
-      - indeed
-      - of course
-      - that sounds good
-      - correct
-
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
 - intent: deny
   examples: |
     - no
@@ -49,7 +45,6 @@ nlu:
     - don't like that
     - no way
     - not really
-
 - intent: mood_great
   examples: |
     - I am happy
@@ -80,7 +75,6 @@ nlu:
     - Today is an awesome day!
     - I'm so glad
     - I'm just really happy right now
-
 - intent: mood_unhappy
   examples: |
     - I am sad
@@ -137,7 +131,6 @@ nlu:
     - I am as lonely as can be
     - I am going through a rather rough time
     - I'm grieving
-
 - intent: mood_bored
   examples: |
     - soo bored
@@ -160,14 +153,12 @@ nlu:
     - It's very boring
     - I'm already bored
     - I'm bored out of my mind
-
 - intent: bot_challenge
-  examples: | 
+  examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
-
 - intent: start
   examples: |
     - start
@@ -175,14 +166,12 @@ nlu:
     - begin
     - init
     - /start
-
 - intent: stop
   examples: |
     - quit
     - close
     - stop
     - /stop
-
 - intent: out_of_scope
   examples: |
     - blablabla
@@ -198,11 +187,8 @@ nlu:
     - pppppppppp
     - kkkkkkk
     - smdcspkèsj
-
-# PARTE INFORMATIVA
-
 - intent: restaurant_list
-  examples: | 
+  examples: |
     - Which restaurants are registered on the platform?
     - I want a list of all restaurants
     - restaurants
@@ -211,14 +197,12 @@ nlu:
     - Which restaurant are there?
     - Show me all restaurants on the platform
     - /restaurant_list
-
 - intent: restaurant_info
   examples: |
     - I want to get more infos about a restaurant
     - Can you give me more info about restaurants
     - I want a detailed description of a restaurant
     - /restaurant_info
-
 - intent: cuisine_list
   examples: |
     - Can you tell me which cuisines are available?
@@ -229,7 +213,6 @@ nlu:
     - What kind of cuisine offer restaurant in NY?
     - Cuisines?
     - /cuisine_list
-
 - intent: cuisine_form
   examples: |
     - Which restaurant with [American](cuisine) cuisine are available?
@@ -238,11 +221,92 @@ nlu:
     - Can you tell me which restaurant offers [Italian](cuisine) cuisine?
     - I'm interested in knowing which diners offers [Turkish](cuisine) cuisine?
     - I want all bar that offers [Irish](cuisine) dishes
-    - Tell me which fast foods are available for [Hamburgers](cuisine) 
+    - Tell me which fast foods are available for [Hamburgers](cuisine)
     - [Caribbean](cuisine) cuisine diners?
-
+- intent: reservation
+  examples: |
+    - Hello, I would like to make a reservation
+    - Could you please reserve a table
+    - I'd like to book a table
+    - I'd like to reserve a table
+    - I want to make a reservations
+    - I'd like to make a reservations
+    - Please could you reserve a table for me.
+    - Reserve a table
+    - Book a restaurant
+    - I'd like to book a restaurant
+    - Hey can you book a table for me?
+    - Please reserve me a table for dinner
+    - I must reserve a table for lunch
+    - Can I book a restaurant for breakfast?
+    - /reservation
+    - i'd like to book a table
+- intent: reservation_list
+  examples: |
+    - Please can you tell me active reservation I have?
+    - Show me active reservations
+    - Which are my current reservations
+    - My reservations?
+    - Yo tell me my reservations
+    - Which are my booked table?
+    - Tables reserved?
+    - reservations
+    - Find all my reservations
+- intent: reservation_list_phone
+  examples: |
+    - My phone number is [3384023576](phone_number)
+    - [3517468901](phone_number)
+    - Yeah, my number is [3702365110](phone_number)
+    - yes, it is [3358190178](phone_number)
+    - My mobile phone number is [3342390145](phone_number)
+    - Number is [3317891265](phone_number)
+    - Find reservations for phone number [3451234000](phone_number)
+    - All reservation for [3669054698](phone_number)
+    - Tables reserved by [3387589012](phone_number)
+    - reservation for [3670912970](phone_number)
+- intent: make_reservation_phone
+  examples: |
+    - My phone number is [3384023576](phone_number)
+    - [3517468901](phone_number)
+    - Yeah, my number is [3702365110](phone_number)
+    - yes, it is [3358190178](phone_number)
+    - My mobile phone number is [3342390145](phone_number)
+    - Number is [3317891265](phone_number)
+    - Phone number for the reservation is [3670912970](phone_number)
+- intent: set_people_number
+  examples: |
+    - [2](people_number)
+    - [3](people_number)
+    - [4](people_number)
+    - [10](people_number)
+    - [15](people_number)
+    - [20](people_number)
+    - [22](people_number)
+    - [45](people_number)
+    - [56](people_number)
+    - [120](people_number)
+    - Sure, we are [5](people_number)
+    - We would like to make a reservation for [8](people_number) people, please.
+    - I would like to reserve for [20](people_number) people.
+    - I would like to reserve for [20](people_number)
+    - We would like to reserve for [20](people_number) people.
+    - We would like to reserve for [20](people_number)
+    - We are [15](people_number)
+    - We will be approximately [10](people_number)
+- intent: confirm_reservation
+  examples: |
+    - /confirm_reservation
+- intent: deny_reservation
+  examples: |
+    - /deny_reservation
+- regex: people_number
+  examples: |
+    - ^[0-9]+$
+- regex: phone_number
+  examples: |
+    - \d{10}
 - lookup: cuisine
-  examples: | 
+  examples: |
     - American
     - Bagels/Pretzels
     - Bakery
@@ -273,52 +337,3 @@ nlu:
     - Sushi
     - Thai
     - Turkish
-
-# PARTE DELLA PRENOTAZIONE DEI TAVOLI
-# TODO: Completare l'inserimento delle frasi per far partire la reservation
-- intent: reservation
-  examples: |
-    - Hello, I would like to make a reservation
-    - Could you please reserve a table
-    - I'd like to book a table
-    - I'd like to reserve a table
-    - I want to make a reservations
-    - I'd like to make a reservations
-    - Please could you reserve a table for me.
-    - Reserve a table
-    - Book a restaurant
-    - I'd like to book a restaurant
-    - Hey can you book a table for me?
-    - Please reserve me a table for dinner
-    - I must reserve a table for lunch
-    - Can I book a restaurant for breakfast?
-    - /reservation
-
-- intent: reservation_list
-  examples: |
-    - Please can you tell me active reservation I have?
-    - Show me active reservations
-    - Which are my current reservations
-    - My reservations?
-    - Yo tell me my reservations
-    - Which are my booked table?
-    - Tables reserved?
-    - reservations
-    - Find all my reservations
-
-- regex: phone_number
-  examples: |
-    - \d{10}
-
-- intent: reservation_list_phone
-  examples: |
-    - My phone number is [3384023576](phone_number)
-    - [3517468901](phone_number)
-    - Yeah, my number is [3702365110](phone_number)
-    - yes, it is [3358190178](phone_number)
-    - My mobile phone number is [3342390145](phone_number)
-    - Number is [3317891265](phone_number)
-    - Find reservations for phone number [3451234000](phone_number)
-    - All reservation for [3669054698](phone_number)
-    - Tables reserved by [3387589012](phone_number)
-    - reservation for [3670912970](phone_number)
