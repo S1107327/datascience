@@ -28,6 +28,12 @@ class MongoDBConnector:
     def get_active_client_reservations(self, phone_number):
         reservations = self.client['rasa_db']['reservation'].find({"phone_number": phone_number})
         return reservations
+    
+    ##TODO: Recupero della collezione dal documento (SOLO SE SI MODIFICA SOTTO)
+    ##TODO: prenderne 10
+    def get_restaurant_reviews(self, name):
+        restaurant_reviews = self.client['rasa_db']['reviews'].find({"restaurant_name": re.compile(name, re.IGNORECASE)})
+        return restaurant_reviews    
 
     def save_reservation(self, name, reservation):
         restaurant = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)},{"_id":0,'restaurant_id':1, "name":1})
@@ -35,3 +41,12 @@ class MongoDBConnector:
         reservation['restaurant_name'] = restaurant['name']
         collection=self.client['rasa_db']["reservation"]
         collection.insert_one(reservation)
+
+    ##TODO: collection dentro singolo ristorante
+    def save_review(self, name, review):
+        restaurant = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)},{"_id":0,'restaurant_id':1, "name":1})
+
+        
+        collection=self.client['rasa_db']["reviews"]
+        collection.update_one(review)
+

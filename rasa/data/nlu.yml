@@ -361,6 +361,15 @@ nlu:
     - \b\d{4}/\d{2}/\d{2}\b
     - \b\d{2}-\d{2}-\d{4}\b
     - \b\d{2}/\d{2}/\d{4}\b
+- intent: review
+  examples: |
+    - Hello, I would like to leave a review
+    - Can I leave a review
+    - I'd like to leave a review
+    - I want to write a review
+	  - Can I write a review
+	  - May I write a review
+    - /review    
 - regex: people_number
   examples: |
     - ^[0-9]+$

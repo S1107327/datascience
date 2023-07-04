@@ -2,6 +2,7 @@ from re import template
 import sys
 from threading import current_thread
 sys.path.append("../")
+from datetime import date
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
@@ -176,14 +177,6 @@ class ActionShowReservations(Action):
                 text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Name: {reservation['name']}\n"
         dispatcher.utter_message(text=text_to_display)
 
-class ActionReviewRestaurant(Action):
-    def name(self) -> Text:
-        return "action_review_restaurant"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        pass
 
 class ActionClearFormSlots(Action):
     def name(self) -> Text:
@@ -298,4 +291,80 @@ class ValidateReservationForm(FormValidationAction):
         dispatcher.utter_message(text="Inserted time is not correct. Retry!")
         return {'time':None}
 
+### REVIEW ACTIONS ###
+##TODO: Funzioni su mongo per prendere i dati#
+class ActionReviewRestaurant(Action):
+    def name(self) -> Text:
+        return "action_review_restaurant"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        mongo_db = MongoDBConnector()
+        review = {}
+        review['restaurant_name'] = tracker.get_slot("restaurant_name_review")
+        review['name'] = tracker.get_slot("name_review")
+        review['body'] =  tracker.get_slot("review_body")
+        review['date_review'] = date.today()
+        mongo_db.save_review(review=review)
+
+        return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None)]
+    
+##TODO: da implementare con stories##
+##TODO: prenderne solo 10
+
+class ActionShowReviews(Action):
+    def name(self) -> Text:
+        return "action_get_reviews"
+
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        restaurant = tracker.latest_message['entities'][0]['value']
+        mongo_db = MongoDBConnector()
+        reviews = mongo_db.get_restaurant_reviews(restaurant)
+        text_to_display = f"Here are the 10 latest reviews for {restaurant}\n"
+        for review in reviews:
+            ##if     
+            text_to_display += f"{review['name']} for {review['restaurant_name']}, {review['date']}\n"
+            ##incremento contatore
+        dispatcher.utter_message(text=text_to_display)
+
+
+class ActionShowReviewInfo(Action):
+    def name(self) -> Text:
+        return "action_show_review_info"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        utter_text = "This are your review infos:\n"
+        utter_text += f"Restaurant: {tracker.get_slot('restaurant_name_review')}\n"
+        utter_text += f"Text: {tracker.get_slot('review')}\n"
+        utter_text += f"From: {tracker.get_slot('name_review')}\n"
+        dispatcher.utter_message(text=utter_text)
+
+class ValidateReviewForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_review_form"
+
+    def validate_restaurant_name_review(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        mongo_db = MongoDBConnector()
+        restaurants = mongo_db.get_restaurant_names_list()
+        restaurant_name_list = []
+        for restaurant in restaurants:
+            restaurant_name_list.append(str(restaurant['name']).lower())
+        if slot_value.lower() not in restaurant_name_list:
+            dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service.")
+            return {"restaurant_name_review": None}
+        return {"restaurant_name_review": slot_value}
 

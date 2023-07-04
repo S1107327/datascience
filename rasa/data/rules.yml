@@ -105,3 +105,14 @@ rules:
   steps:
     - intent: reservation_list_phone
     - action: action_get_reservations
+
+# Rules for reviews
+  - rule: review form
+  steps:
+    - intent: review
+    - action: review_form
+    - active_loop: review_form
+    - active_loop: null
+    - action: action_review_restaurant
+    - action: utter_goodbye
+	  
