@@ -172,9 +172,9 @@ class ActionShowReservations(Action):
         text_to_display = f"Here are reservations for {client}\n"
         for reservation in reservations:
             if int(reservation['people_number']) > 1:
-                text_to_display += f"{reservation['name']} for {reservation['people_number']} people {reservation['date']} at {reservation['time']}\n Name: {reservation['name']}\n"
+                text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
             else:
-                text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Name: {reservation['name']}\n"
+                text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
         dispatcher.utter_message(text=text_to_display)
 
 
@@ -293,7 +293,7 @@ class ValidateReservationForm(FormValidationAction):
         return {'time':None}
 
 ### REVIEW ACTIONS ###
-##TODO: Funzioni su mongo per prendere i dati#
+##TODO: Funzioni su mongo per prendere i dati
 class ActionReviewRestaurant(Action):
     def name(self) -> Text:
         return "action_review_restaurant"
@@ -303,12 +303,12 @@ class ActionReviewRestaurant(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
         review = {}
-        review['restaurant_name'] = tracker.get_slot("restaurant_name_review")
+        name = tracker.get_slot("restaurant_name_review")
         review['name'] = tracker.get_slot("name_review")
+        review['score'] = int(tracker.get_slot("score_review"))
         review['body'] =  tracker.get_slot("review_body")
-        review['date_review'] = date.today()
-        mongo_db.save_review(review=review)
-
+        review['date_review'] = date.today().strftime("%d-%m-%Y")
+        mongo_db.save_review(name, review)
         return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None)]
     
 ##TODO: da implementare con stories##
@@ -324,15 +324,12 @@ class ActionShowReviews(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
-        restaurant = tracker.latest_message['entities'][0]['value']
+        restaurant = tracker.get_slot("restaurant_name_review")
         mongo_db = MongoDBConnector()
-        reviews = mongo_db.get_restaurant_reviews(restaurant)
-        text_to_display = f"Here are the 10 latest reviews for {restaurant}\n"
+        reviews = mongo_db.get_restaurant_reviews(restaurant).limit(10)
+        dispatcher.utter_message(text=f"Here are the 10 latest reviews for {restaurant}\n")
         for review in reviews:
-            ##if     
-            text_to_display += f"{review['name']} for {review['restaurant_name']}, {review['date']}\n"
-            ##incremento contatore
-        dispatcher.utter_message(text=text_to_display)
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date']}\n \"{review['body']}\"")
 
 
 class ActionShowReviewInfo(Action):

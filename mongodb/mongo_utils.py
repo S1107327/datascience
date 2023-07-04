@@ -42,11 +42,8 @@ class MongoDBConnector:
         collection=self.client['rasa_db']["reservation"]
         collection.insert_one(reservation)
 
-    ##TODO: collection dentro singolo ristorante
     def save_review(self, name, review):
-        restaurant = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)},{"_id":0,'restaurant_id':1, "name":1})
-
-        
-        collection=self.client['rasa_db']["reviews"]
-        collection.update_one(review)
+        restaurant = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)},{"_id":0,'restaurant_id':1, "name":1, "reviews":1})
+        collection = self.client['rasa_db']["restaurants"]
+        collection.update_one({"restaurant_id": restaurant['restaurant_id']}, {"$push": {"reviews": review}})
 

@@ -29,16 +29,19 @@ rules:
   steps:
     - intent: restaurant_list
     - action: action_restaurant_list
+    - action: utter_need_something_else
 
 - rule: show cuisine list
   steps:
     - intent: cuisine_list
     - action: action_cuisines_list
+    - action: utter_need_something_else
 
 - rule: restaurant of a cuisine
   steps:
     - intent: cuisine_form
     - action: action_restaurant_cuisine
+    - action: utter_need_something_else
 
 - rule: Activate Restaurant Info Form
   steps:
@@ -56,6 +59,7 @@ rules:
     - requested_slot: null
   - action: utter_submit_info
   - action: action_info_restaurant
+  - action: utter_need_something_else
 
 # Rules for reservation service
 - rule: Active Reservation form
@@ -90,7 +94,7 @@ rules:
   - action: utter_ask_reservation_confirm
   - intent: deny_reservation
   - action: action_clear_form_slots
-  - action: utter_goodbye
+  - action: utter_need_something_else
 
 - rule: Asking for reservations
   steps:
@@ -101,14 +105,23 @@ rules:
   steps:
     - intent: reservation_list_phone
     - action: action_get_reservations
+    - action: utter_need_something_else
 
 # Rules for reviews
-  - rule: review form
+- rule: review form
   steps:
     - intent: review
     - action: review_form
     - active_loop: review_form
     - active_loop: null
     - action: action_review_restaurant
-    - action: utter_goodbye
-	  
+    - action: utter_need_something_else
+
+- rule: Show Reviews Form
+  steps:
+    - intent: show_review
+    - action: show_review_form
+    - active_loop: show_review_form
+    - active_loop: null
+    - action: action_get_reviews
+    - action: utter_need_something_else

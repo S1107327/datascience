@@ -243,15 +243,16 @@ nlu:
     - i'd like to book a table
 - intent: reservation_list
   examples: |
-    - Please can you tell me active reservation I have?
-    - Show me active reservations
-    - Which are my current reservations
     - My reservations?
     - Yo tell me my reservations
     - Which are my booked table?
     - Tables reserved?
     - reservations
     - Find all my reservations
+    - I wanna see all my booked table
+    - Please can you tell me active reservation I have?
+    - Which are my current reservations
+    - Show me active reservations
 - intent: reservation_list_phone
   examples: |
     - My phone number is [3384023576](phone_number)
@@ -263,7 +264,7 @@ nlu:
     - Find reservations for phone number [3451234000](phone_number)
     - All reservation for [3669054698](phone_number)
     - Tables reserved by [3387589012](phone_number)
-    - reservation for [3670912970](phone_number)
+    - reservations for [3670912970](phone_number)
 - intent: make_reservation_phone
   examples: |
     - My phone number is [3384023576](phone_number)
@@ -305,12 +306,23 @@ nlu:
     - Can I leave a review
     - I'd like to leave a review
     - I want to write a review
-	  - Can I write a review
-	  - May I write a review
-    - /review    
+    - I want to give my opinion about a restaurant
+    - Opinion on a restaurant
+    - Yo bro I wanna review a diner
+    - review a restaurant
+    - /review
+- intent: show_review
+  examples: |
+    - I wanna see some reviews
+    - Please show me some review
+    - reviews list
+    - I want to know opinions from other people about restaurants
+    - Give me review list
+    - Could I see the opinions of other users about diners?
+    - Let me know about thoughts about some restaurants
 - regex: people_number
   examples: |
-    - ^[0-9]+$
+    - ^[0-9]{1,3}$
 - regex: phone_number
   examples: |
     - \d{10}
