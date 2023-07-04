@@ -367,8 +367,8 @@ nlu:
     - Can I leave a review
     - I'd like to leave a review
     - I want to write a review
-	  - Can I write a review
-	  - May I write a review
+    - Can I write a review
+    - May I write a review
     - /review    
 - regex: people_number
   examples: |

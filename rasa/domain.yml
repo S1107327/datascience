@@ -111,7 +111,7 @@ slots:
       conditions:
       - active_loop: review_form
         requested_slot: review_body
-    restaurant_name_review:
+  restaurant_name_review:
     type: text
     mappings:
     - type: from_text
