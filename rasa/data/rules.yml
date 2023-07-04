@@ -78,7 +78,9 @@ rules:
     - requested_slot: null
   - action: action_show_reservation_info
   - action: utter_ask_reservation_confirm
-  - intent: confirm_reservation
+  - or:
+    - intent: confirm_reservation
+    - intent: affirm
   - action: action_reserve_table
   - action: utter_confirm_reservation
 
@@ -92,7 +94,9 @@ rules:
     - requested_slot: null
   - action: action_show_reservation_info
   - action: utter_ask_reservation_confirm
-  - intent: deny_reservation
+  - or:
+    - intent: deny_reservation
+    - intent: deny
   - action: action_clear_form_slots
   - action: utter_need_something_else
 
@@ -115,13 +119,4 @@ rules:
     - active_loop: review_form
     - active_loop: null
     - action: action_review_restaurant
-    - action: utter_need_something_else
-
-- rule: Show Reviews Form
-  steps:
-    - intent: show_review
-    - action: show_review_form
-    - active_loop: show_review_form
-    - active_loop: null
-    - action: action_get_reviews
-    - action: utter_need_something_else
+    - action: utter_goodbye

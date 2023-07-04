@@ -31,7 +31,7 @@ stories:
   - action: utter_goodbye
 
 
-- story: Reservation process stopped
+- story: Reservation process stopped on people_number
   steps:
   - intent: reservation
   - action: reservation_form
@@ -42,6 +42,116 @@ stories:
     - restaurant_name_reservation: Wendy's
   - slot_was_set:
     - requested_slot: people_number
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_clear_form_slots
+  - action: utter_reservation_stopped
+
+- story: General reservation process stopped
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_clear_form_slots
+  - action: utter_reservation_stopped
+
+- story: Reservation process stopped on phone_number
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Wendy's
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - slot_was_set:
+    - date: 12/12/2023
+  - slot_was_set:
+    - requested_slot: time
+  - slot_was_set:
+    - time: 12:30
+  - slot_was_set:
+    - requested_slot: allergies
+  - slot_was_set:
+    - allergies: no
+  - slot_was_set:
+    - requested_slot: name
+  - slot_was_set:
+    - name: Pluto
+  - slot_was_set:
+    - requested_slot: phone_number
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_clear_form_slots
+  - action: utter_reservation_stopped
+
+- story: Reservation process stopped on date
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Wendy's
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_clear_form_slots
+  - action: utter_reservation_stopped
+
+- story: Reservation process stopped on time
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Wendy's
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - slot_was_set:
+    - date: 12/12/2023
+  - slot_was_set:
+    - requested_slot: time
   - intent: stop
   - action: utter_confirm_stop
   - intent: affirm

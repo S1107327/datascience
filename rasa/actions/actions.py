@@ -211,7 +211,7 @@ class ValidateReservationForm(FormValidationAction):
 
     def validate_restaurant_name_reservation(
         self,
-        slot_value: Any,
+        slot_value: Text,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: DomainDict,
@@ -235,7 +235,7 @@ class ValidateReservationForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         mongo_db = MongoDBConnector()
-        if not slot_value.isdigit():
+        if not slot_value.isdigit() or not int(slot_value)>0:
             dispatcher.utter_message(text=f"Sorry but specified people number is not correct or valid.")
             return {"people_number": None}
         return {"people_number": slot_value}
@@ -261,7 +261,6 @@ class ValidateReservationForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         current_date = datetime.now().date()
         date_format = ["%Y-%m-%d", "%Y%m%d", "%Y/%m/%d", "%d-%m-%Y", "%d/%m/%Y"]
-        date_is_correct = False
         for format in date_format:
             try:
                 formatted_date = datetime.strptime(slot_value, format).date()

@@ -13,6 +13,7 @@ intents:
 - mood_bored
 - mood_great
 - mood_unhappy
+- nlu_fallback
 - reservation
 - reservation_list
 - reservation_list_phone
@@ -23,12 +24,14 @@ intents:
 - show_review
 - start
 - stop
+- set_date_for_reservation
+- set_time_for_reservation
 entities:
+- people_number
 - restaurant_name_reservation
 - restaurant_name_info
 - restaurant_name_review
 - cuisine
-- people_number
 - date
 - time
 - allergies
@@ -65,7 +68,7 @@ slots:
   date:
     type: text
     mappings:
-    - type: from_text
+    - type: from_entity
       entity: date
       conditions:
       - active_loop: reservation_form
@@ -73,7 +76,7 @@ slots:
   time:
     type: text
     mappings:
-    - type: from_text
+    - type: from_entity
       entity: time
       conditions:
       - active_loop: reservation_form
@@ -237,16 +240,16 @@ responses:
   utter_need_something_else:
   - text: I'm here if you need something else!
 actions:
-- utter_reservation_stopped
 - action_clear_form_slots
+- utter_reservation_stopped
 - utter_confirm_stop
+- utter_goodbye
 - utter_start
 - utter_stop
 - utter_greet
 - utter_cheer_up
 - utter_did_that_help
 - utter_happy
-- utter_goodbye
 - utter_iamabot
 - utter_need_something_else
 - utter_ask_restaurant_name_info
