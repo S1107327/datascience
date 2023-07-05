@@ -187,16 +187,27 @@ nlu:
     - pppppppppp
     - kkkkkkk
     - smdcspkèsj
-- intent: restaurant_list
+- intent: top_restaurant_list
   examples: |
     - Which restaurants are registered on the platform?
-    - I want a list of all restaurants
+    - I want a list of restaurants
     - restaurants
-    - List of all restaurants
+    - List of restaurants
     - Tell me in which restaurants I can reserve a table
     - Which restaurant are there?
-    - Show me all restaurants on the platform
-    - /restaurant_list
+    - Show me  restaurants on the platform
+    - Can you show me best restaurants on the platform
+    - I want to eat well, tell me which good restaurants are there
+    - Best restaurants
+    - /top_restaurant_list
+- intent: all_restaurant_list
+  examples: |
+    - Show me all restaurant on the platform
+    - All restaurants please
+    - I want to know every restaurants name in the platform
+    - Can you tell me all restaurants in which I can book a table
+    - Show me every restaurant registered
+    - /all_restaurant_list
 - intent: restaurant_info
   examples: |
     - I want to get more infos about a restaurant

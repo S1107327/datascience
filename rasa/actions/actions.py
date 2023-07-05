@@ -26,23 +26,39 @@ class ActionStart(Action):
         dispatcher.utter_message(image="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/aa/b0/fd/caption.jpg?w=600&h=-1&s=1")
 
 ### INFO ACTIONS ###
-class ActionShowRestaurant(Action):
+class ActionShowTopRestaurant(Action):
     def name(self) -> Text:
-        return "action_restaurant_list"
+        return "action_top_restaurant_list"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
-        restaurant_json = mongo_db.get_restaurant_names_list()
+        restaurant_json = mongo_db.get_restaurants_ordered_by_score()
         text_to_display = ""
-        for restaurant in restaurant_json:
-            text_to_display += f"{restaurant['name']}\n"
+        for restaurant in list(restaurant_json)[:10]:
+            text_to_display += f"{restaurant['_id']}\n"
+        dispatcher.utter_message(text=text_to_display,
+                                 buttons=[{"title": "INFO", "payload": "/restaurant_info"}, {"title": "MORE", "payload": "/all_restaurant_list"}])
+
+        return []
+
+class ActionShowAllRestaurant(Action):
+    def name(self) -> Text:
+        return "action_all_restaurant_list"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        mongo_db = MongoDBConnector()
+        restaurant_json = mongo_db.get_restaurants_ordered_by_score()
+        text_to_display = ""
+        for restaurant in list(restaurant_json)[10:]:
+            text_to_display += f"{restaurant['_id']}\n"
         dispatcher.utter_message(text=text_to_display,
                                  buttons=[{"title": "INFO", "payload": "/restaurant_info"}])
 
         return []
-
 class ActionShowCuisines(Action):
     def name(self) -> Text:
         return "action_cuisines_list"
@@ -323,12 +339,13 @@ class ActionShowReviews(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
-        restaurant = tracker.get_slot("restaurant_name_review")
+        restaurant = tracker.get_slot("restaurant_name_review_list")
+        dispatcher.utter_message(text=str(restaurant))
         mongo_db = MongoDBConnector()
-        reviews = mongo_db.get_restaurant_reviews(restaurant).limit(10)
-        dispatcher.utter_message(text=f"Here are the 10 latest reviews for {restaurant}\n")
+        reviews = mongo_db.get_restaurant_reviews(restaurant)
+        dispatcher.utter_message(text=f"Here are the 5 latest reviews for {restaurant}\n")
         for review in reviews:
-            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date']}\n \"{review['body']}\"")
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
 
 
 class ActionShowReviewInfo(Action):

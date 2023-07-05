@@ -25,10 +25,16 @@ rules:
   - action: utter_iamabot
 
 # Rules for info function
-- rule: show restaurant list
+- rule: show top restaurant list
   steps:
-    - intent: restaurant_list
-    - action: action_restaurant_list
+    - intent: top_restaurant_list
+    - action: action_top_restaurant_list
+    - action: utter_need_something_else
+
+- rule: show all restaurant list
+  steps:
+    - intent: all_restaurant_list
+    - action: action_all_restaurant_list
     - action: utter_need_something_else
 
 - rule: show cuisine list
@@ -120,3 +126,12 @@ rules:
     - active_loop: null
     - action: action_review_restaurant
     - action: utter_goodbye
+
+- rule: Show Reviews Form
+  steps:
+    - intent: show_review
+    - action: show_review_form
+    - active_loop: show_review_form
+    - active_loop: null
+    - action: action_get_reviews
+    - action: utter_need_something_else

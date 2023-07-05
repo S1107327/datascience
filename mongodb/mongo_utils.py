@@ -11,6 +11,14 @@ class MongoDBConnector:
     def get_restaurant_names_list(self):
         restaurants = self.client['rasa_db']['restaurants'].find({}, {"name": 1})
         return restaurants
+
+    def get_restaurants_ordered_by_score(self):
+        restaurants_ordered_by_avg_score = self.client['rasa_db']['restaurants'].aggregate([{ "$unwind": "$reviews" },
+                                                                                            { "$group": { "_id": "$name", "avgScore": { "$avg": "$reviews.score" }}},
+                                                                                            { "$sort": {"avgScore": -1}}])
+        return restaurants_ordered_by_avg_score
+
+
     #TODO: inserire metodo per prendere i primi cinque ristoranti per valutazione media
     def get_cuisines(self):
         cuisines = self.client['rasa_db']['restaurants'].find({}, {"cuisine": 1}).distinct('cuisine')
@@ -32,8 +40,15 @@ class MongoDBConnector:
     ##TODO: Recupero della collezione dal documento (SOLO SE SI MODIFICA SOTTO)
     ##TODO: prenderne 10
     def get_restaurant_reviews(self, name):
-        restaurant_reviews = self.client['rasa_db']['reviews'].find({"restaurant_name": re.compile(name, re.IGNORECASE)})
-        return restaurant_reviews    
+        reviews = []
+        restaurant_reviews = self.client['rasa_db']['restaurants'].aggregate([{"$match": {"name": re.compile(name, re.IGNORECASE)}},
+                                                                              {"$unwind": "$reviews" },
+                                                                              {"$sort": {"reviews.date_review": -1}},
+                                                                              {"$project": {"reviews":1}},
+                                                                              {"$limit": 5}])
+        for review in restaurant_reviews:
+            reviews.append(review['reviews'])
+        return reviews
 
     def save_reservation(self, name, reservation):
         restaurant = self.client['rasa_db']['restaurants'].find_one({"name": re.compile(name, re.IGNORECASE)},{"_id":0,'restaurant_id':1, "name":1})
