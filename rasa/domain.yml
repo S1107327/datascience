@@ -1,36 +1,46 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - mood_bored
-  - bot_challenge
-  - start
-  - stop
-  - restaurant_list
-  - restaurant_info
-  - cuisine_list
-  - cuisine_form
-  - reservation
-  - reservation_list
-  - reservation_list_phone
-  - help
-
-# Decidere come sfruttare le entities
+- affirm
+- bot_challenge
+- confirm_reservation
+- cuisine_form
+- cuisine_list
+- deny
+- deny_reservation
+- goodbye
+- greet
+- make_reservation_phone
+- mood_bored
+- mood_great
+- mood_unhappy
+- nlu_fallback
+- reservation
+- reservation_list
+- reservation_list_phone
+- restaurant_info
+- restaurant_list
+- review
+- set_people_number
+- show_review
+- start
+- stop
+- set_date_for_reservation
+- set_time_for_reservation
+- help
 entities:
-  - restaurant_name_reservation
-  - cuisine
-  - people_number
-  - date
-  - time
-  - allergies
-  - name
-  - phone_number
-
+- people_number
+- restaurant_name_reservation
+- restaurant_name_info
+- restaurant_name_review
+- cuisine
+- date
+- time
+- allergies
+- name
+- name_review
+- phone_number
+- review_body
+- score_review
 slots:
   restaurant_name_info:
     type: text
@@ -40,7 +50,6 @@ slots:
       conditions:
       - active_loop: info_restaurant_form
         requested_slot: restaurant_name_info
-
   restaurant_name_reservation:
     type: text
     mappings:
@@ -49,34 +58,30 @@ slots:
       conditions:
       - active_loop: reservation_form
         requested_slot: restaurant_name_reservation
-
   people_number:
     type: float
     mappings:
-    - type: from_text
+    - type: from_entity
       entity: people_number
       conditions:
       - active_loop: reservation_form
         requested_slot: people_number
-
   date:
     type: text
     mappings:
-    - type: from_text
+    - type: from_entity
       entity: date
       conditions:
       - active_loop: reservation_form
         requested_slot: date
-
   time:
     type: text
     mappings:
-    - type: from_text
+    - type: from_entity
       entity: time
       conditions:
       - active_loop: reservation_form
         requested_slot: time
-
   allergies:
     type: text
     mappings:
@@ -85,7 +90,6 @@ slots:
       conditions:
       - active_loop: reservation_form
         requested_slot: allergies
-
   name:
     type: text
     mappings:
@@ -94,7 +98,6 @@ slots:
       conditions:
       - active_loop: reservation_form
         requested_slot: name
-
   phone_number:
     type: text
     mappings:
@@ -103,93 +106,119 @@ slots:
       conditions:
       - active_loop: reservation_form
         requested_slot: phone_number
-
+  review_body:
+    type: text
+    mappings:
+    - type: from_text
+      entity: review_body
+      conditions:
+      - active_loop: review_form
+        requested_slot: review_body
+  restaurant_name_review:
+    type: text
+    mappings:
+    - type: from_text
+      entity: restaurant_name_review
+      conditions:
+      - active_loop: review_form
+        requested_slot: restaurant_name_review   
+  name_review:
+    type: text
+    mappings:
+    - type: from_text
+      entity: name_review
+      conditions:
+      - active_loop: review_form
+        requested_slot: name_review
+  score_review:
+    type: any
+    mappings:
+    - type: from_text
+      entity: score_review
+      conditions:
+      - active_loop: review_form
+        requested_slot: score_review
+  restaurant_name_review_list:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: show_review_form
+            requested_slot: restaurant_name_review_list
+     
 forms:
   reservation_form:
     required_slots:
-      - restaurant_name_reservation
-      - people_number
-      - date 
-      - time 
-      - allergies
-      - name 
-      - phone_number 
-
+    - restaurant_name_reservation
+    - people_number
+    - date
+    - time
+    - allergies
+    - name
+    - phone_number
   info_restaurant_form:
     required_slots:
-        - restaurant_name_info
-
+    - restaurant_name_info
+  review_form:
+    required_slots:
+    - restaurant_name_review
+    - name_review
+    - score_review
+    - review_body
+  show_review_form:
+    required_slots:
+    - restaurant_name_review_list
 responses:
-
   utter_start:
-    - text: "Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and 
-              leave reviews in NY restaurants. In order to help you, use the below buttons to start
-              interacting"
-      buttons:
-        - title: "HELP"
-          payload: "/help"
-        - title: "RESTAURANTS"
-          payload: "/restaurant_list"
-        - title: "CUISINES"
-          payload: "/cuisine_list"
-
-
-
+  - text: Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and leave reviews in NY restaurants. In order to help you, use the below buttons to start interacting
+    buttons:
+    - title: HELP
+      payload: /help
+    - title: RESTAURANTS
+      payload: /restaurant_list
+    - title: CUISINES
+      payload: /cuisine_list
   utter_stop:
-    - text: "Thank you for choosing the service. Have a nice day!"
-
+  - text: Thank you for choosing the service. Have a nice day!
   utter_greet:
-  - text: "Hey! How are you?"
-
+  - text: Hey! How are you?
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
   utter_did_that_help:
-  - text: "Did that help you?"
-
+  - text: Did that help you?
   utter_happy:
   - text: "Great, carry on!"
   - text: "I'm happy to hear that!"
-
   utter_sad:
   - text: "I'm sorry..."
   - text: "I'll try to do better next time."
-
   utter_goodbye:
-  - text: "Bye"
-
+  - text: Bye
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
+  - text: I am a bot, powered by Rasa.
   utter_ask_restaurant_name_info:
-  - text: "Which restaurant you want info about?"
-
+  - text: Which restaurant you want info about?
   utter_submit_info:
-    - text: "Got it!"
-
-# Da qui sono indicate le domande che il bot fa per la form
+  - text: Got it!
+  utter_confirm_stop:
+  - text: Do you want to stop the reservation process?
+  utter_reservation_stopped:
+  - text: Reservation process has been cancelled. Do you want something else?
   utter_ask_restaurant_name_reservation:
-  - text: "Restaurant name?"
-
+  - text: Restaurant name?
   utter_ask_people_number:
-  - text: "How many people would you like to reserve for?"
-
+  - text: How many people would you like to reserve for?
   utter_ask_date:
-  - text: "On what day would you like to make the reservation?"
-
+  - text: 'On what date would you like to make the reservation? Date must be given in one of this format: YYYY-mm-dd, YYYYmmdd, YYYY/mm/dd, dd-mm-YYYY, dd/mm/YYYY'
   utter_ask_time:
-  - text: "What time would you like to make the reservation?"
-
+  - text: 'What time would you like to make the reservation? Time must be in this format: HH:MM'
   utter_ask_allergies:
-  - text: "Do you have any allergies?"
-
+  - text: Do you have any allergies?
   utter_ask_name:
-  - text: "Please, may you tell me your name for the reservation?"
-
+  - text: Please, may you tell me your name for the reservation?
   utter_ask_phone_number:
-  - text: "Phone number?"
-
+  - text: Phone number?
   utter_respond_reservations:
     - text: "Sure! Tell me your phone number to get your reservation"
   
@@ -212,30 +241,68 @@ responses:
             Once you've made one or more reservations, you can also ask me to remind you of them.
             I hope that I was clear enough!
 
+  utter_ask_reservation_confirm:
+  - text: Do you confirm your reservation?
+    buttons:
+    - title: YES
+      payload: /confirm_reservation
+    - title: NO
+      payload: /deny_reservation
+  utter_confirm_reservation:
+  - text: Well done! Your resevation has been confirmed
+  utter_deny_reservation:
+  - text: Reservation cancelled
+  utter_ask_restaurant_name_review:
+  - text: Which restaurant would you like to review?
+  utter_ask_review_body:
+  - text: Please give us your review, we really value your feedback!
+  utter_ask_name_review:
+  - text: Please, may you tell us your name for the review?
+  utter_ask_score_review:
+  - text: From 1-5, how would you rate your experience at {restaurant_name_review}?
+  utter_ask_restaurant_name_review_list:
+  - text: Which restaurant do you want to read reviews about?
+  utter_need_something_else:
+  - text: I'm here if you need something else!
 actions:
-  - utter_start
-  - utter_stop
-  - utter_greet
-  - utter_cheer_up
-  - utter_did_that_help
-  - utter_happy
-  - utter_goodbye
-  - utter_iamabot
-  - utter_ask_restaurant_name_info
-  - utter_ask_restaurant_name_reservation
-  - utter_submit_info
-  - utter_respond_reservations
-  - utter_help
-  - action_restaurant_list
-  - action_info_restaurant
-  - action_reserve_table
-  - action_review_restaurant
-  - action_cuisines_list
-  - action_start
-  - action_restaurant_cuisine
-  - action_get_reservations
-  - validate_info_restaurant_form
-
+- action_clear_form_slots
+- utter_reservation_stopped
+- utter_confirm_stop
+- utter_goodbye
+- utter_start
+- utter_stop
+- utter_greet
+- utter_cheer_up
+- utter_did_that_help
+- utter_happy
+- utter_sad
+- utter_help
+- utter_iamabot
+- utter_need_something_else
+- utter_ask_restaurant_name_info
+- utter_ask_restaurant_name_reservation
+- utter_submit_info
+- utter_respond_reservations
+- utter_ask_reservation_confirm
+- utter_confirm_reservation
+- utter_ask_restaurant_name_review
+- utter_ask_review_body
+- utter_ask_name_review
+- utter_ask_score_review
+- action_restaurant_list
+- action_info_restaurant
+- action_reserve_table
+- action_review_restaurant
+- action_cuisines_list
+- action_start
+- action_restaurant_cuisine
+- action_get_reservations
+- action_get_reviews
+- action_show_reservation_info
+- action_show_review_info
+- validate_info_restaurant_form
+- validate_reservation_form
+- validate_review_form
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

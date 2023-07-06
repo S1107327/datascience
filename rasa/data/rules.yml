@@ -1,6 +1,7 @@
 version: "3.1"
 
 
+
 rules:
 - rule: Start the conversation
   steps:
@@ -8,10 +9,10 @@ rules:
   - action: action_start
   - action: utter_start
 
-- rule: End the conversation
-  steps:
-  - intent: stop
-  - action: utter_stop
+# - rule: End the conversation
+#   steps:
+#   - intent: stop
+#   - action: utter_stop
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
@@ -28,16 +29,19 @@ rules:
   steps:
     - intent: restaurant_list
     - action: action_restaurant_list
+    - action: utter_need_something_else
 
 - rule: show cuisine list
   steps:
     - intent: cuisine_list
     - action: action_cuisines_list
+    - action: utter_need_something_else
 
 - rule: restaurant of a cuisine
   steps:
     - intent: cuisine_form
     - action: action_restaurant_cuisine
+    - action: utter_need_something_else
 
 - rule: Activate Restaurant Info Form
   steps:
@@ -55,6 +59,7 @@ rules:
     - requested_slot: null
   - action: utter_submit_info
   - action: action_info_restaurant
+  - action: utter_need_something_else
 
 # Rules for reservation service
 - rule: Active Reservation form
@@ -71,8 +76,29 @@ rules:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
+  - action: action_show_reservation_info
+  - action: utter_ask_reservation_confirm
+  - or:
+    - intent: confirm_reservation
+    - intent: affirm
   - action: action_reserve_table
-  - action: utter_goodbye
+  - action: utter_confirm_reservation
+
+- rule: Delete Reservation Form
+  condition:
+  - active_loop: reservation_form
+  steps:
+  - action: reservation_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_show_reservation_info
+  - action: utter_ask_reservation_confirm
+  - or:
+    - intent: deny_reservation
+    - intent: deny
+  - action: action_clear_form_slots
+  - action: utter_need_something_else
 
 - rule: Asking for reservations
   steps:
@@ -83,9 +109,14 @@ rules:
   steps:
     - intent: reservation_list_phone
     - action: action_get_reservations
+    - action: utter_need_something_else
 
-#Rules for help functions
-- rule: Help
-step:
-  -intent: help
-  -action: utter_help
+# Rules for reviews
+- rule: review form
+  steps:
+    - intent: review
+    - action: review_form
+    - active_loop: review_form
+    - active_loop: null
+    - action: action_review_restaurant
+    - action: utter_goodbye
