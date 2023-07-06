@@ -83,3 +83,9 @@ rules:
   steps:
     - intent: reservation_list_phone
     - action: action_get_reservations
+
+#Rules for help functions
+- rule: Help
+step:
+  -intent: help
+  -action: utter_help

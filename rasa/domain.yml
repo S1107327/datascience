@@ -18,6 +18,7 @@ intents:
   - reservation
   - reservation_list
   - reservation_list_phone
+  - help
 
 # Decidere come sfruttare le entities
 entities:
@@ -149,6 +150,11 @@ responses:
 
   utter_happy:
   - text: "Great, carry on!"
+  - text: "I'm happy to hear that!"
+
+  utter_sad:
+  - text: "I'm sorry..."
+  - text: "I'll try to do better next time."
 
   utter_goodbye:
   - text: "Bye"
@@ -186,6 +192,25 @@ responses:
 
   utter_respond_reservations:
     - text: "Sure! Tell me your phone number to get your reservation"
+  
+  utter_help:
+    - text: |
+            I can help you decide where to go eat! You can ask me multiple things.
+            You can ask me info about restaurants in the NY area. Specifically, you can ask me:
+              -The list of all the restaurants in the area.
+              -All of the possibile cuisine types you can choose from.
+              -Which restaurants offer a specific type of cuisine.
+              -Info about a restaurant you're curious of.
+            You can then ask me to reserve a place in a restaurant of you choice! For that I will need some information:
+              -In which place you want to go, of course.
+              -How many people you want to reserve for.
+              -The date of the reservation.
+              -At what time you would like to go eat.
+              -Whether you suffer from some allergies.
+              -Your name.
+              -Your phone number.
+            Once you've made one or more reservations, you can also ask me to remind you of them.
+            I hope that I was clear enough!
 
 actions:
   - utter_start
@@ -200,6 +225,7 @@ actions:
   - utter_ask_restaurant_name_reservation
   - utter_submit_info
   - utter_respond_reservations
+  - utter_help
   - action_restaurant_list
   - action_info_restaurant
   - action_reserve_table

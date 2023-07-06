@@ -39,6 +39,12 @@ nlu:
       - of course
       - that sounds good
       - correct
+      - i got it
+      - yes thank you
+      - yes thanks
+      - sure
+      - i understand
+      - yes it was clear!
 
 - intent: deny
   examples: |
@@ -49,6 +55,8 @@ nlu:
     - don't like that
     - no way
     - not really
+    - no i did not understand
+    - still unclear
 
 - intent: mood_great
   examples: |
@@ -80,6 +88,7 @@ nlu:
     - Today is an awesome day!
     - I'm so glad
     - I'm just really happy right now
+    - Not bad
 
 - intent: mood_unhappy
   examples: |
@@ -322,3 +331,16 @@ nlu:
     - All reservation for [3669054698](phone_number)
     - Tables reserved by [3387589012](phone_number)
     - reservation for [3670912970](phone_number)
+
+#HELP
+- intent: help
+  examples: |
+    - What can i do?
+    - What do you do?
+    - What do you offer me?
+    - Please explain
+    - Explain
+    - Help
+    - Help me
+    - I don't know what to do
+    - /help

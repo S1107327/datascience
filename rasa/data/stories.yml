@@ -29,6 +29,22 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
+- story: help path good end
+  steps:
+  - intent: help
+  - action: utter_help
+  - intent: affirm
+  - action: utter_happy
+  - action: action_restart
+
+- story: help path bad end
+  steps:
+  - intent: help
+  - action: utter_help
+  - intent: deny
+  - action: utter_sad
+  - action: action_restart
+
 #- story: interactive_story_1
 #  steps:
 #  - intent: start
