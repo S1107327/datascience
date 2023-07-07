@@ -393,6 +393,32 @@ nlu:
     - Give me review list
     - Could I see the opinions of other users about diners?
     - Let me know about thoughts about some restaurants
+- intent: show_all_reviews
+  examples: |
+    - /show_all_reviews
+    - Show me all restaurant's review
+    - I wanna read all reviews about a restaurant
+    - Please give me any available review on a restaurant
+    - Yo all reviews 
+    - All reviews
+- intent: confirm_review
+  examples: |
+    - Yeah leave this review for restaurant
+    - confirm review
+    - confirm
+    - yes, confirm review and score
+    - Go ahead and leave review
+    - /confirm_review
+- intent: deny_review
+  examples: |
+    - no, stop
+    - no, I don't want to confirm review
+    - delete review please
+    - pls, I don't want to leave this review
+    - I want to delete review 
+    - no i don't want to save this opinion
+    - Please delete review draft
+    - /deny_review
 - regex: people_number
   examples: |
     - ^[0-9]{1,3}$

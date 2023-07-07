@@ -4,10 +4,12 @@ intents:
 - all_restaurant_list
 - bot_challenge
 - confirm_reservation
+- confirm_review
 - cuisine_form
 - cuisine_list
 - deny
 - deny_reservation
+- deny_review
 - goodbye
 - greet
 - make_reservation_phone
@@ -21,6 +23,7 @@ intents:
 - restaurant_info
 - review
 - set_people_number
+- show_all_reviews
 - show_review
 - start
 - stop
@@ -240,6 +243,17 @@ responses:
   - text: Which restaurant do you want to read reviews about?
   utter_need_something_else:
   - text: I'm here if you need something else!
+  utter_ask_review_confirm:
+    - text: Do you want to leave this review and this score?
+      buttons:
+        - title: YES
+          payload: /confirm_review
+        - title: NO
+          payload: /deny_review
+  utter_confirm_review:
+    - text: Well done! Your feedback is important for us! Thank for improve other users experience!
+  utter_deny_review:
+    - text: Review draft cancelled
 actions:
 - action_clear_form_slots
 - utter_reservation_stopped
@@ -257,12 +271,15 @@ actions:
 - utter_ask_restaurant_name_reservation
 - utter_submit_info
 - utter_respond_reservations
+- utter_ask_review_confirm
 - utter_ask_reservation_confirm
 - utter_confirm_reservation
 - utter_ask_restaurant_name_review
 - utter_ask_review_body
+- utter_confirm_review
 - utter_ask_name_review
 - utter_ask_score_review
+- utter_deny_review
 - action_top_restaurant_list
 - action_all_restaurant_list
 - action_info_restaurant
@@ -270,6 +287,7 @@ actions:
 - action_review_restaurant
 - action_cuisines_list
 - action_start
+- action_get_all_reviews
 - action_restaurant_cuisine
 - action_get_reservations
 - action_get_reviews

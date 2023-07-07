@@ -1,6 +1,4 @@
-from re import template
 import sys
-from threading import current_thread
 sys.path.append("../")
 from datetime import date
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -24,6 +22,7 @@ class ActionStart(Action):
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
         dispatcher.utter_message(image="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/aa/b0/fd/caption.jpg?w=600&h=-1&s=1")
+        return []
 
 ### INFO ACTIONS ###
 class ActionShowTopRestaurant(Action):
@@ -192,6 +191,7 @@ class ActionShowReservations(Action):
             else:
                 text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
         dispatcher.utter_message(text=text_to_display)
+        return []
 
 
 class ActionClearFormSlots(Action):
@@ -220,6 +220,7 @@ class ActionShowReservationInfo(Action):
         utter_text += f"Reservation name: {tracker.get_slot('name')}\n"
         utter_text += f"Given phone number: {tracker.get_slot('phone_number')}"
         dispatcher.utter_message(text=utter_text)
+        return []
 
 class ValidateReservationForm(FormValidationAction):
     def name(self) -> Text:
@@ -327,7 +328,6 @@ class ActionReviewRestaurant(Action):
         return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None)]
     
 ##TODO: da implementare con stories##
-##TODO: prenderne solo 10
 
 class ActionShowReviews(Action):
     def name(self) -> Text:
@@ -340,12 +340,13 @@ class ActionShowReviews(Action):
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
         restaurant = tracker.get_slot("restaurant_name_review_list")
-        dispatcher.utter_message(text=str(restaurant))
         mongo_db = MongoDBConnector()
         reviews = mongo_db.get_restaurant_reviews(restaurant)
         dispatcher.utter_message(text=f"Here are the 5 latest reviews for {restaurant}\n")
         for review in reviews:
-            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"",
+                                     button={"title": "MORE REVIEWS", "payload": "/show_all_reviews"})
+        return []
 
 
 class ActionShowReviewInfo(Action):
@@ -360,6 +361,7 @@ class ActionShowReviewInfo(Action):
         utter_text += f"Text: {tracker.get_slot('review')}\n"
         utter_text += f"From: {tracker.get_slot('name_review')}\n"
         dispatcher.utter_message(text=utter_text)
+        return []
 
 class ValidateReviewForm(FormValidationAction):
     def name(self) -> Text:
