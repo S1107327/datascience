@@ -264,6 +264,8 @@ responses:
   - text: Which restaurant do you want to read reviews about?
   utter_need_something_else:
   - text: I'm here if you need something else!
+  utter_review_stopped:
+  - text: Review cancelled.
 actions:
 - action_clear_form_slots
 - utter_reservation_stopped

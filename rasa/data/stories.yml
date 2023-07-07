@@ -198,3 +198,37 @@ stories:
     - requested_slot: null
   - action: action_clear_form_slots
   - action: utter_reservation_stopped
+
+- story: Reservation process stopped on date
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Wendy's
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - intent: set_people_number
+  - action: action_default_fallback
+
+- story: General review process stopped
+  steps:
+  - intent: review
+  - action: review_form
+  - active_loop: review_form
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_clear_form_slots
+  - action: utter_review_stopped
+  - action: utter_need_something_else

@@ -100,7 +100,7 @@ rules:
     - intent: deny_reservation
     - intent: deny
   - action: action_clear_form_slots
-  - action: utter_need_something_else
+  - action: utter_deny_reservation
 
 - rule: Asking for reservations
   steps:
@@ -122,3 +122,12 @@ rules:
     - active_loop: null
     - action: action_review_restaurant
     - action: utter_goodbye
+    
+- rule: Show Reviews Form
+  steps:
+    - intent: show_review
+    - action: show_review_form
+    - active_loop: show_review_form
+    - active_loop: null
+    - action: action_get_reviews
+    - action: utter_need_something_else

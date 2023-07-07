@@ -170,13 +170,16 @@ class ActionShowReservations(Action):
         client = tracker.latest_message['entities'][0]['value']
         mongo_db = MongoDBConnector()
         reservations = mongo_db.get_active_client_reservations(client)
-        text_to_display = f"Here are reservations for {client}\n"
-        for reservation in reservations:
-            if int(reservation['people_number']) > 1:
-                text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
-            else:
-                text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
-        dispatcher.utter_message(text=text_to_display)
+        if len(reservations) > 0:
+            text_to_display = f"Here are reservations for {client}\n"
+            for reservation in reservations:
+                if int(reservation['people_number']) > 1:
+                    text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                else:
+                    text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+            dispatcher.utter_message(text=text_to_display)
+        else:
+            dispatcher.utter_message(text=f"There are no active reservations for \"{client}\"")
 
 
 class ActionClearFormSlots(Action):
@@ -268,7 +271,7 @@ class ValidateReservationForm(FormValidationAction):
                     dispatcher.utter_message(text="Sorry, reservation date can't be a past date.")
                     return {"date":None}
                 else:
-                    formatted_date = formatted_date.strftime('%d-%m-%Y')
+                    formatted_date = formatted_date.strftime('%Y-%m-%d')
                     return {"date": formatted_date}
             except Exception:
                 pass
@@ -310,9 +313,6 @@ class ActionReviewRestaurant(Action):
         mongo_db.save_review(name, review)
         return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None), SlotSet("score_review", None)]
     
-##TODO: da implementare con stories##
-##TODO: prenderne solo 10
-
 class ActionShowReviews(Action):
     def name(self) -> Text:
         return "action_get_reviews"
