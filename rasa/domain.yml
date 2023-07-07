@@ -1,12 +1,15 @@
 version: '3.1'
 intents:
 - affirm
+- all_restaurant_list
 - bot_challenge
 - confirm_reservation
+- confirm_review
 - cuisine_form
 - cuisine_list
 - deny
 - deny_reservation
+- deny_review
 - goodbye
 - greet
 - make_reservation_phone
@@ -18,14 +21,15 @@ intents:
 - reservation_list
 - reservation_list_phone
 - restaurant_info
-- restaurant_list
 - review
 - set_people_number
+- show_all_reviews
 - show_review
 - start
 - stop
 - set_date_for_reservation
 - set_time_for_reservation
+- top_restaurant_list
 - help
 entities:
 - people_number
@@ -175,7 +179,7 @@ responses:
     - title: HELP
       payload: /help
     - title: RESTAURANTS
-      payload: /restaurant_list
+      payload: /top_restaurant_list
     - title: CUISINES
       payload: /cuisine_list
   utter_stop:
@@ -221,7 +225,7 @@ responses:
   - text: Phone number?
   utter_respond_reservations:
     - text: "Sure! Tell me your phone number to get your reservation"
-  
+
   utter_help:
     - text: |
             I can help you decide where to go eat! You can ask me multiple things.
@@ -266,6 +270,17 @@ responses:
   - text: I'm here if you need something else!
   utter_review_stopped:
   - text: Review cancelled.
+  utter_ask_review_confirm:
+    - text: Do you want to leave this review and this score?
+      buttons:
+        - title: YES
+          payload: /confirm_review
+        - title: NO
+          payload: /deny_review
+  utter_confirm_review:
+    - text: Well done! Your feedback is important for us! Thank for improve other users experience!
+  utter_deny_review:
+    - text: Review draft cancelled
 actions:
 - action_clear_form_slots
 - utter_reservation_stopped
@@ -285,18 +300,23 @@ actions:
 - utter_ask_restaurant_name_reservation
 - utter_submit_info
 - utter_respond_reservations
+- utter_ask_review_confirm
 - utter_ask_reservation_confirm
 - utter_confirm_reservation
 - utter_ask_restaurant_name_review
 - utter_ask_review_body
+- utter_confirm_review
 - utter_ask_name_review
 - utter_ask_score_review
-- action_restaurant_list
+- utter_deny_review
+- action_top_restaurant_list
+- action_all_restaurant_list
 - action_info_restaurant
 - action_reserve_table
 - action_review_restaurant
 - action_cuisines_list
 - action_start
+- action_get_all_reviews
 - action_restaurant_cuisine
 - action_get_reservations
 - action_get_reviews
