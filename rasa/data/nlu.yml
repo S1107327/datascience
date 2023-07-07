@@ -171,6 +171,17 @@ nlu:
     - quit
     - close
     - stop
+    - stop the bot
+    - end
+    - exit
+    - please stop
+    - exit please
+    - i don't want to continue
+    - yo stop pls
+    - i wanna end the conversation
+    - pls let me free
+    - stoppppp
+    - quitt please
     - /stop
 - intent: out_of_scope
   examples: |

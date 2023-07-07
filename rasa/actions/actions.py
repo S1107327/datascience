@@ -10,6 +10,7 @@ from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
 from rasa_sdk.events import SlotSet, AllSlotsReset
 from datetime import datetime
+import re
 
 
 ### START ACTIONS ###
@@ -185,7 +186,6 @@ class ActionClearFormSlots(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Form slot cleared")
         return[AllSlotsReset()]
 
 
@@ -308,7 +308,7 @@ class ActionReviewRestaurant(Action):
         review['body'] =  tracker.get_slot("review_body")
         review['date_review'] = date.today().strftime("%d-%m-%Y")
         mongo_db.save_review(name, review)
-        return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None)]
+        return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None), SlotSet("score_review", None)]
     
 ##TODO: da implementare con stories##
 ##TODO: prenderne solo 10
@@ -365,3 +365,16 @@ class ValidateReviewForm(FormValidationAction):
             return {"restaurant_name_review": None}
         return {"restaurant_name_review": slot_value}
 
+    def validate_score_review(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        pattern = r'^\s*[1-5]\s*$'
+        match = re.search(pattern, slot_value)
+        if not match:
+            dispatcher.utter_message(text=f"Sorry but the given score is not correct or valid.")
+            return {"score_review": None}
+        return {"score_review": match.group().strip()}

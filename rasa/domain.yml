@@ -199,7 +199,7 @@ responses:
   utter_confirm_stop:
   - text: Do you want to stop the reservation process?
   utter_reservation_stopped:
-  - text: Reservation process has been cancelled. Do you want something else?
+  - text: The reservation has been cancelled. Do you need something else?
   utter_ask_restaurant_name_reservation:
   - text: Restaurant name?
   utter_ask_people_number:
