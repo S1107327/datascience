@@ -1,5 +1,6 @@
 .idea
 .ipynb_checkpoints
+.venv
 example_dataset.csv
 example_dataset2.csv
 legit
