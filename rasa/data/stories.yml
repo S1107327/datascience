@@ -30,20 +30,29 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story: help path good end
+- story: help path generic stop
   steps:
-  - intent: help
-  - action: utter_help
-  - intent: affirm
-  - action: utter_happy
+  - intent: help_generic
+  - action: utter_help_generic
+  - intent: deny
+  - action: utter_need_something_else
   - action: action_restart
 
-- story: help path bad end
+- story: help path go specific
   steps:
-  - intent: help
-  - action: utter_help
-  - intent: deny
-  - action: utter_sad
+  - intent: help_generic
+  - action: utter_help_generic
+  - intent: affirm
+  - action: utter_help_which_type
+  - action: help_form
+  - active_loop: help_form
+  - slot_was_set:
+      - requested_slot: help_category
+  - active_loop: null
+  - action: action_show_specific_help
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_need_something_else
   - action: action_restart
 
 #- story: interactive_story_1

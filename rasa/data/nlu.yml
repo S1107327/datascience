@@ -42,6 +42,10 @@ nlu:
       - sure
       - i understand
       - yes it was clear!
+      - yes i do
+      - yes more
+      - you got it
+      - for sure
 - intent: deny
   examples: |
     - no
@@ -482,7 +486,7 @@ nlu:
     - reservation for [3670912970](phone_number)
 
 #HELP
-- intent: help
+- intent: help_generic
   examples: |
     - What can i do?
     - What do you do?
@@ -493,3 +497,10 @@ nlu:
     - Help me
     - I don't know what to do
     - /help
+
+- intent: choose_help_category
+  examples: |
+    - I want more info on [info](help_category)
+    - [reserve][help_category]
+    - Please elaborate on [review](help_category)
+    - Explain [info](help_category)

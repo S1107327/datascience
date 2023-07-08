@@ -365,3 +365,40 @@ class ValidateReviewForm(FormValidationAction):
             return {"restaurant_name_review": None}
         return {"restaurant_name_review": slot_value}
 
+class ActionShowSpecificHelp(Action):
+    def name(self) -> Text:
+        return "action_show_specific_help"
+    
+    def run(
+            self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]
+    ) -> Dict[Text, Any]:
+        user_choice=tracker.get_slot("help_category")
+        match user_choice:
+            case "info":
+                dispatcher.utter_message(text="""I can give you various kinds of information. Specifically:\n
+                                         \t- The list of all the restaurants in the area.\n
+                                         \t- All of the possibile cuisine types you can choose from.\n
+                                         \t- Which restaurants offer a specific type of cuisine.\n
+                                         \t- Info about a restaurant you're curious of.""")
+            case "reserve":
+                dispatcher.utter_message(text="""In order for me to be able to reserve a place for you to eat, 
+                                         I will need some information from you:\n
+                                         \t- In which place you want to go, of course.\n
+                                         \t- How many people you want to reserve for.\n
+                                         \t- The date of the reservation.\n
+                                         \t- At what time you would like to go eat.\n
+                                         \t- Whether you suffer from some allergies.\n
+                                         \t- Your name.\n
+                                         \t- Your phone number.""")
+            case "review":
+                dispatcher.utter_message(text="""To leave a review of your experience in a restaurant 
+                                         I will need from you:\n
+                                         \t- The name of the restaurant you want to leave a review at\n
+                                         \t- Your review. Don't be too harsh!\n
+                                         \t- Your name\n
+                                         \t- A score between 1-5""")
+            case _:
+                dispatcher.utter_message(text=f"Sorry, i don't recognize {user_choice}...")

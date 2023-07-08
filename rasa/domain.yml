@@ -26,7 +26,10 @@ intents:
 - stop
 - set_date_for_reservation
 - set_time_for_reservation
-- help
+- help_generic
+- choose_help_category
+#- help_specific
+
 entities:
 - people_number
 - restaurant_name_reservation
@@ -41,6 +44,8 @@ entities:
 - phone_number
 - review_body
 - score_review
+- help_category
+
 slots:
   restaurant_name_info:
     type: text
@@ -145,6 +150,14 @@ slots:
         conditions:
           - active_loop: show_review_form
             requested_slot: restaurant_name_review_list
+  help_category:
+    type: text
+    mappings:
+      - type: from_text
+        entity: help_category
+        conditions:
+          - active_loop: help_form
+            requested_slot: help_category
      
 forms:
   reservation_form:
@@ -168,6 +181,10 @@ forms:
   show_review_form:
     required_slots:
     - restaurant_name_review_list
+  help_form:
+    required_slots:
+    - help_category
+
 responses:
   utter_start:
   - text: Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and leave reviews in NY restaurants. In order to help you, use the below buttons to start interacting
@@ -221,26 +238,6 @@ responses:
   - text: Phone number?
   utter_respond_reservations:
     - text: "Sure! Tell me your phone number to get your reservation"
-  
-  utter_help:
-    - text: |
-            I can help you decide where to go eat! You can ask me multiple things.
-            You can ask me info about restaurants in the NY area. Specifically, you can ask me:
-              -The list of all the restaurants in the area.
-              -All of the possibile cuisine types you can choose from.
-              -Which restaurants offer a specific type of cuisine.
-              -Info about a restaurant you're curious of.
-            You can then ask me to reserve a place in a restaurant of you choice! For that I will need some information:
-              -In which place you want to go, of course.
-              -How many people you want to reserve for.
-              -The date of the reservation.
-              -At what time you would like to go eat.
-              -Whether you suffer from some allergies.
-              -Your name.
-              -Your phone number.
-            Once you've made one or more reservations, you can also ask me to remind you of them.
-            I hope that I was clear enough!
-
   utter_ask_reservation_confirm:
   - text: Do you confirm your reservation?
     buttons:
@@ -264,6 +261,18 @@ responses:
   - text: Which restaurant do you want to read reviews about?
   utter_need_something_else:
   - text: I'm here if you need something else!
+  utter_help_generic:
+    - text: |
+            I can help you decide where to go eat! You can ask me multiple things.
+              - You can ask me info about restaurants in the NY area.
+              - You can then ask me to reserve a place in a restaurant of you choice!
+              - And finally, after you've had your meal, you can leave a review for the other users to read.
+            Do you need more information on one of these functionalities?
+  utter_help_which_type:
+    - text: With what you need help? Choose from "info", "reserve", and "review".
+
+            
+
 actions:
 - action_clear_form_slots
 - utter_reservation_stopped
@@ -276,7 +285,8 @@ actions:
 - utter_did_that_help
 - utter_happy
 - utter_sad
-- utter_help
+- utter_help_generic
+- utter_help_which_type
 - utter_iamabot
 - utter_need_something_else
 - utter_ask_restaurant_name_info
@@ -300,9 +310,11 @@ actions:
 - action_get_reviews
 - action_show_reservation_info
 - action_show_review_info
+- action_show_specific_help
 - validate_info_restaurant_form
 - validate_reservation_form
 - validate_review_form
+#- utter_help_specific
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
