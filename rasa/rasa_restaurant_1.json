@@ -1,4 +1,7 @@
 [{
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d2"
+  },
   "address": {
     "building": "1007",
     "coord": [
@@ -14,6 +17,9 @@
   "restaurant_id": "30075445"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d3"
+  },
   "address": {
     "building": "469",
     "coord": [
@@ -29,6 +35,9 @@
   "restaurant_id": "30112340"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d4"
+  },
   "address": {
     "building": "351",
     "coord": [
@@ -44,6 +53,9 @@
   "restaurant_id": "30191841"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d5"
+  },
   "address": {
     "building": "2780",
     "coord": [
@@ -59,6 +71,9 @@
   "restaurant_id": "40356018"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d6"
+  },
   "address": {
     "building": "97-22",
     "coord": [
@@ -74,6 +89,9 @@
   "restaurant_id": "40356068"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d7"
+  },
   "address": {
     "building": "8825",
     "coord": [
@@ -89,6 +107,9 @@
   "restaurant_id": "40356151"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d8"
+  },
   "address": {
     "building": "2206",
     "coord": [
@@ -104,6 +125,9 @@
   "restaurant_id": "40356442"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451d9"
+  },
   "address": {
     "building": "7114",
     "coord": [
@@ -119,6 +143,9 @@
   "restaurant_id": "40356483"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451da"
+  },
   "address": {
     "building": "6409",
     "coord": [
@@ -134,6 +161,9 @@
   "restaurant_id": "40356649"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451db"
+  },
   "address": {
     "building": "1839",
     "coord": [
@@ -149,6 +179,9 @@
   "restaurant_id": "40356731"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451dc"
+  },
   "address": {
     "building": "2300",
     "coord": [
@@ -164,6 +197,9 @@
   "restaurant_id": "40357217"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451dd"
+  },
   "address": {
     "building": "7715",
     "coord": [
@@ -179,6 +215,9 @@
   "restaurant_id": "40357437"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451de"
+  },
   "address": {
     "building": "1269",
     "coord": [
@@ -194,6 +233,9 @@
   "restaurant_id": "40358429"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451df"
+  },
   "address": {
     "building": "1",
     "coord": [
@@ -209,6 +251,9 @@
   "restaurant_id": "40359480"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e0"
+  },
   "address": {
     "building": "705",
     "coord": [
@@ -224,6 +269,9 @@
   "restaurant_id": "40360045"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e1"
+  },
   "address": {
     "building": "203",
     "coord": [
@@ -239,21 +287,9 @@
   "restaurant_id": "40360076"
 },
 {
-  "address": {
-    "building": "265-15",
-    "coord": [
-      -73.7032601,
-      40.7386417
-    ],
-    "street": "Hillside Avenue",
-    "zipcode": "11004"
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e3"
   },
-  "borough": "Queens",
-  "cuisine": "Ice Cream, Gelato, Yogurt, Ices",
-  "name": "Carvel Ice Cream",
-  "restaurant_id": "40361322"
-},
-{
   "address": {
     "building": "6909",
     "coord": [
@@ -269,6 +305,9 @@
   "restaurant_id": "40361390"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e4"
+  },
   "address": {
     "building": "522",
     "coord": [
@@ -284,6 +323,9 @@
   "restaurant_id": "40361521"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e5"
+  },
   "address": {
     "building": "284",
     "coord": [
@@ -299,6 +341,9 @@
   "restaurant_id": "40361606"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e6"
+  },
   "address": {
     "building": "129-08",
     "coord": [
@@ -314,6 +359,9 @@
   "restaurant_id": "40361618"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e7"
+  },
   "address": {
     "building": "759",
     "coord": [
@@ -329,6 +377,9 @@
   "restaurant_id": "40361708"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e8"
+  },
   "address": {
     "building": "3406",
     "coord": [
@@ -344,6 +395,9 @@
   "restaurant_id": "40361998"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451e9"
+  },
   "address": {
     "building": "502",
     "coord": [
@@ -359,6 +413,9 @@
   "restaurant_id": "40362098"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451ea"
+  },
   "address": {
     "building": "730",
     "coord": [
@@ -374,6 +431,9 @@
   "restaurant_id": "40362264"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451eb"
+  },
   "address": {
     "building": "18",
     "coord": [
@@ -389,6 +449,9 @@
   "restaurant_id": "40362274"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451ec"
+  },
   "address": {
     "building": "531",
     "coord": [
@@ -404,6 +467,9 @@
   "restaurant_id": "40362344"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451ed"
+  },
   "address": {
     "building": "103-05",
     "coord": [
@@ -419,6 +485,9 @@
   "restaurant_id": "40362432"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451ee"
+  },
   "address": {
     "building": "60",
     "coord": [
@@ -434,6 +503,9 @@
   "restaurant_id": "40362715"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451ef"
+  },
   "address": {
     "building": "195",
     "coord": [
@@ -449,6 +521,9 @@
   "restaurant_id": "40362869"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f0"
+  },
   "address": {
     "building": "107",
     "coord": [
@@ -464,21 +539,9 @@
   "restaurant_id": "40363021"
 },
 {
-  "address": {
-    "building": "1006",
-    "coord": [
-      -73.84856870000002,
-      40.8903781
-    ],
-    "street": "East 233 Street",
-    "zipcode": "10466"
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f2"
   },
-  "borough": "Bronx",
-  "cuisine": "Ice Cream, Gelato, Yogurt, Ices",
-  "name": "Carvel Ice Cream",
-  "restaurant_id": "40363093"
-},
-{
   "address": {
     "building": "56",
     "coord": [
@@ -494,6 +557,9 @@
   "restaurant_id": "40363098"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f3"
+  },
   "address": {
     "building": "7615",
     "coord": [
@@ -509,6 +575,9 @@
   "restaurant_id": "40363117"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f4"
+  },
   "address": {
     "building": "120",
     "coord": [
@@ -524,6 +593,9 @@
   "restaurant_id": "40363151"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f5"
+  },
   "address": {
     "building": "1236",
     "coord": [
@@ -539,6 +611,9 @@
   "restaurant_id": "40363289"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f6"
+  },
   "address": {
     "building": "625",
     "coord": [
@@ -554,6 +629,9 @@
   "restaurant_id": "40363298"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f7"
+  },
   "address": {
     "building": "1069",
     "coord": [
@@ -569,6 +647,9 @@
   "restaurant_id": "40363333"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f8"
+  },
   "address": {
     "building": "405",
     "coord": [
@@ -584,6 +665,9 @@
   "restaurant_id": "40363426"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451f9"
+  },
   "address": {
     "building": "2491",
     "coord": [
@@ -599,6 +683,9 @@
   "restaurant_id": "40363427"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451fa"
+  },
   "address": {
     "building": "7905",
     "coord": [
@@ -614,6 +701,9 @@
   "restaurant_id": "40363565"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451fb"
+  },
   "address": {
     "building": "87-69",
     "coord": [
@@ -629,6 +719,9 @@
   "restaurant_id": "40363590"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451fc"
+  },
   "address": {
     "building": "1418",
     "coord": [
@@ -644,6 +737,9 @@
   "restaurant_id": "40363630"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451fd"
+  },
   "address": {
     "building": "464",
     "coord": [
@@ -659,6 +755,9 @@
   "restaurant_id": "40363644"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451fe"
+  },
   "address": {
     "building": "437",
     "coord": [
@@ -674,6 +773,9 @@
   "restaurant_id": "40363685"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c1451ff"
+  },
   "address": {
     "building": "1031",
     "coord": [
@@ -689,21 +791,9 @@
   "restaurant_id": "40363744"
 },
 {
-  "address": {
-    "building": "1111",
-    "coord": [
-      -74.0796436,
-      40.59878339999999
-    ],
-    "street": "Hylan Boulevard",
-    "zipcode": "10305"
+  "_id": {
+    "$oid": "64a45be19e4a7f743c145201"
   },
-  "borough": "Staten Island",
-  "cuisine": "Ice Cream, Gelato, Yogurt, Ices",
-  "name": "Carvel Ice Cream",
-  "restaurant_id": "40363834"
-},
-{
   "address": {
     "building": "976",
     "coord": [
@@ -719,6 +809,9 @@
   "restaurant_id": "40363920"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c145202"
+  },
   "address": {
     "building": "148",
     "coord": [
@@ -734,6 +827,9 @@
   "restaurant_id": "40363945"
 },
 {
+  "_id": {
+    "$oid": "64a45be19e4a7f743c145203"
+  },
   "address": {
     "building": "364",
     "coord": [

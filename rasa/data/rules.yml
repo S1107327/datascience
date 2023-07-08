@@ -9,10 +9,12 @@ rules:
   - action: action_start
   - action: utter_start
 
-# - rule: End the conversation
-#   steps:
-#   - intent: stop
-#   - action: utter_stop
+- rule: End the conversation
+  condition:
+  - active_loop: null
+  steps:
+  - intent: stop
+  - action: utter_stop
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
@@ -25,10 +27,16 @@ rules:
   - action: utter_iamabot
 
 # Rules for info function
-- rule: show restaurant list
+- rule: show top restaurant list
   steps:
-    - intent: restaurant_list
-    - action: action_restaurant_list
+    - intent: top_restaurant_list
+    - action: action_top_restaurant_list
+    - action: utter_need_something_else
+
+- rule: show all restaurant list
+  steps:
+    - intent: all_restaurant_list
+    - action: action_all_restaurant_list
     - action: utter_need_something_else
 
 - rule: show cuisine list
@@ -98,7 +106,7 @@ rules:
     - intent: deny_reservation
     - intent: deny
   - action: action_clear_form_slots
-  - action: utter_need_something_else
+  - action: utter_deny_reservation
 
 - rule: Asking for reservations
   steps:
@@ -112,11 +120,57 @@ rules:
     - action: utter_need_something_else
 
 # Rules for reviews
-- rule: review form
+- rule: Active Review Form
   steps:
     - intent: review
     - action: review_form
     - active_loop: review_form
-    - active_loop: null
     - action: action_review_restaurant
     - action: utter_goodbye
+
+- rule: Submit Review Form
+  condition:
+  - active_loop: review_form
+  steps:
+  - action: review_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_show_review_info
+  - action: utter_ask_review_confirm
+  - or:
+    - intent: confirm_review
+    - intent: affirm
+  - action: action_review_restaurant
+  - action: utter_confirm_review
+
+- rule: Delete Review Form
+  condition:
+  - active_loop: review_form
+  steps:
+  - action: review_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_show_review_info
+  - action: utter_ask_review_confirm
+  - or:
+    - intent: deny_review
+    - intent: deny
+  - action: action_clear_form_slots
+  - action: utter_deny_review
+
+- rule: Show Reviews Form
+  steps:
+    - intent: show_review
+    - action: action_clear_form_slots
+    - action: show_review_form
+    - active_loop: show_review_form
+    - active_loop: null
+    - action: action_get_reviews
+
+- rule: Show all Reviews
+  steps:
+    - intent: show_all_review
+    - action: action_get_all_reviews
+    - action: utter_need_something_else

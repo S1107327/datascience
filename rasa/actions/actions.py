@@ -1,6 +1,4 @@
-from re import template
 import sys
-from threading import current_thread
 sys.path.append("../")
 from datetime import date
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -10,6 +8,7 @@ from typing import Any, Text, Dict, List
 from mongodb.mongo_utils import MongoDBConnector
 from rasa_sdk.events import SlotSet, AllSlotsReset
 from datetime import datetime
+import re
 
 
 ### START ACTIONS ###
@@ -24,20 +23,38 @@ class ActionStart(Action):
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
         dispatcher.utter_message(image="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/27/aa/b0/fd/caption.jpg?w=600&h=-1&s=1")
+        return []
 
 ### INFO ACTIONS ###
-class ActionShowRestaurant(Action):
+class ActionShowTopRestaurant(Action):
     def name(self) -> Text:
-        return "action_restaurant_list"
+        return "action_top_restaurant_list"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
-        restaurant_json = mongo_db.get_restaurant_names_list()
+        restaurant_json = mongo_db.get_restaurants_ordered_by_score()
         text_to_display = ""
-        for restaurant in restaurant_json:
-            text_to_display += f"{restaurant['name']}\n"
+        for restaurant in list(restaurant_json)[:10]:
+            text_to_display += f"{restaurant['_id']}\n"
+        dispatcher.utter_message(text=text_to_display,
+                                 buttons=[{"title": "INFO", "payload": "/restaurant_info"}, {"title": "MORE", "payload": "/all_restaurant_list"}])
+
+        return []
+
+class ActionShowAllRestaurant(Action):
+    def name(self) -> Text:
+        return "action_all_restaurant_list"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        mongo_db = MongoDBConnector()
+        restaurant_json = mongo_db.get_restaurants_ordered_by_score()
+        text_to_display = ""
+        for restaurant in list(restaurant_json)[10:]:
+            text_to_display += f"{restaurant['_id']}\n"
         dispatcher.utter_message(text=text_to_display,
                                  buttons=[{"title": "INFO", "payload": "/restaurant_info"}])
 
@@ -169,13 +186,16 @@ class ActionShowReservations(Action):
         client = tracker.latest_message['entities'][0]['value']
         mongo_db = MongoDBConnector()
         reservations = mongo_db.get_active_client_reservations(client)
-        text_to_display = f"Here are reservations for {client}\n"
-        for reservation in reservations:
-            if int(reservation['people_number']) > 1:
-                text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
-            else:
-                text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
-        dispatcher.utter_message(text=text_to_display)
+        if len(reservations) > 0:
+            text_to_display = f"Here are reservations for {client}\n"
+            for reservation in reservations:
+                if int(reservation['people_number']) > 1:
+                    text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                else:
+                    text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+            dispatcher.utter_message(text=text_to_display)
+        else:
+            dispatcher.utter_message(text=f"There are no active reservations for \"{client}\"")
 
 
 class ActionClearFormSlots(Action):
@@ -185,7 +205,6 @@ class ActionClearFormSlots(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Form slot cleared")
         return[AllSlotsReset()]
 
 
@@ -204,6 +223,7 @@ class ActionShowReservationInfo(Action):
         utter_text += f"Reservation name: {tracker.get_slot('name')}\n"
         utter_text += f"Given phone number: {tracker.get_slot('phone_number')}"
         dispatcher.utter_message(text=utter_text)
+        return []
 
 class ValidateReservationForm(FormValidationAction):
     def name(self) -> Text:
@@ -268,7 +288,7 @@ class ValidateReservationForm(FormValidationAction):
                     dispatcher.utter_message(text="Sorry, reservation date can't be a past date.")
                     return {"date":None}
                 else:
-                    formatted_date = formatted_date.strftime('%d-%m-%Y')
+                    formatted_date = formatted_date.strftime('%Y-%m-%d')
                     return {"date": formatted_date}
             except Exception:
                 pass
@@ -308,10 +328,7 @@ class ActionReviewRestaurant(Action):
         review['body'] =  tracker.get_slot("review_body")
         review['date_review'] = date.today().strftime("%d-%m-%Y")
         mongo_db.save_review(name, review)
-        return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None)]
-    
-##TODO: da implementare con stories##
-##TODO: prenderne solo 10
+        return [SlotSet("restaurant_name_review",None), SlotSet("name_review",None), SlotSet("review_body",None), SlotSet("score_review", None)]
 
 class ActionShowReviews(Action):
     def name(self) -> Text:
@@ -323,12 +340,14 @@ class ActionShowReviews(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
-        restaurant = tracker.get_slot("restaurant_name_review")
+        restaurant = tracker.get_slot("restaurant_name_review_list")
         mongo_db = MongoDBConnector()
-        reviews = mongo_db.get_restaurant_reviews(restaurant).limit(10)
-        dispatcher.utter_message(text=f"Here are the 10 latest reviews for {restaurant}\n")
+        reviews = mongo_db.get_restaurant_reviews(restaurant)
+        dispatcher.utter_message(text=f"Here are the 5 latest reviews for {restaurant}\n")
         for review in reviews:
-            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date']}\n \"{review['body']}\"")
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"",
+                                     button={"title": "MORE REVIEWS", "payload": "/show_all_reviews"})
+        return []
 
 
 class ActionShowReviewInfo(Action):
@@ -343,6 +362,7 @@ class ActionShowReviewInfo(Action):
         utter_text += f"Text: {tracker.get_slot('review')}\n"
         utter_text += f"From: {tracker.get_slot('name_review')}\n"
         dispatcher.utter_message(text=utter_text)
+        return []
 
 class ValidateReviewForm(FormValidationAction):
     def name(self) -> Text:
@@ -364,6 +384,20 @@ class ValidateReviewForm(FormValidationAction):
             dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service.")
             return {"restaurant_name_review": None}
         return {"restaurant_name_review": slot_value}
+
+    def validate_score_review(
+            self,
+            slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict,
+        ) -> Dict[Text, Any]:
+            pattern = r'^\s*[1-5]\s*$'
+            match = re.search(pattern, slot_value)
+            if not match:
+                dispatcher.utter_message(text=f"Sorry but the given score is not correct or valid.")
+                return {"score_review": None}
+            return {"score_review": match.group().strip()}
 
 class ActionShowSpecificHelp(Action):
     def name(self) -> Text:

@@ -1,12 +1,15 @@
 version: '3.1'
 intents:
 - affirm
+- all_restaurant_list
 - bot_challenge
 - confirm_reservation
+- confirm_review
 - cuisine_form
 - cuisine_list
 - deny
 - deny_reservation
+- deny_review
 - goodbye
 - greet
 - make_reservation_phone
@@ -18,9 +21,9 @@ intents:
 - reservation_list
 - reservation_list_phone
 - restaurant_info
-- restaurant_list
 - review
 - set_people_number
+- show_all_reviews
 - show_review
 - start
 - stop
@@ -28,7 +31,7 @@ intents:
 - set_time_for_reservation
 - help_generic
 - choose_help_category
-#- help_specific
+- top_restaurant_list
 
 entities:
 - people_number
@@ -192,7 +195,7 @@ responses:
     - title: HELP
       payload: /help
     - title: RESTAURANTS
-      payload: /restaurant_list
+      payload: /top_restaurant_list
     - title: CUISINES
       payload: /cuisine_list
   utter_stop:
@@ -221,7 +224,7 @@ responses:
   utter_confirm_stop:
   - text: Do you want to stop the reservation process?
   utter_reservation_stopped:
-  - text: Reservation process has been cancelled. Do you want something else?
+  - text: The reservation has been cancelled. Do you need something else?
   utter_ask_restaurant_name_reservation:
   - text: Restaurant name?
   utter_ask_people_number:
@@ -238,6 +241,26 @@ responses:
   - text: Phone number?
   utter_respond_reservations:
     - text: "Sure! Tell me your phone number to get your reservation"
+
+  utter_help:
+    - text: |
+            I can help you decide where to go eat! You can ask me multiple things.
+            You can ask me info about restaurants in the NY area. Specifically, you can ask me:
+              -The list of all the restaurants in the area.
+              -All of the possibile cuisine types you can choose from.
+              -Which restaurants offer a specific type of cuisine.
+              -Info about a restaurant you're curious of.
+            You can then ask me to reserve a place in a restaurant of you choice! For that I will need some information:
+              -In which place you want to go, of course.
+              -How many people you want to reserve for.
+              -The date of the reservation.
+              -At what time you would like to go eat.
+              -Whether you suffer from some allergies.
+              -Your name.
+              -Your phone number.
+            Once you've made one or more reservations, you can also ask me to remind you of them.
+            I hope that I was clear enough!
+
   utter_ask_reservation_confirm:
   - text: Do you confirm your reservation?
     buttons:
@@ -269,10 +292,21 @@ responses:
               - And finally, after you've had your meal, you can leave a review for the other users to read.
             Do you need more information on one of these functionalities?
   utter_help_which_type:
-    - text: With what you need help? Choose from "info", "reserve", and "review".
+    - text: With what you need help? Choose between "info", "reserve", and "review".
 
-            
-
+  utter_review_stopped:
+  - text: Review cancelled.
+  utter_ask_review_confirm:
+    - text: Do you want to leave this review and this score?
+      buttons:
+        - title: YES
+          payload: /confirm_review
+        - title: NO
+          payload: /deny_review
+  utter_confirm_review:
+    - text: Well done! Your feedback is important for us! Thank for improve other users experience!
+  utter_deny_review:
+    - text: Review draft cancelled
 actions:
 - action_clear_form_slots
 - utter_reservation_stopped
@@ -293,18 +327,23 @@ actions:
 - utter_ask_restaurant_name_reservation
 - utter_submit_info
 - utter_respond_reservations
+- utter_ask_review_confirm
 - utter_ask_reservation_confirm
 - utter_confirm_reservation
 - utter_ask_restaurant_name_review
 - utter_ask_review_body
+- utter_confirm_review
 - utter_ask_name_review
 - utter_ask_score_review
-- action_restaurant_list
+- utter_deny_review
+- action_top_restaurant_list
+- action_all_restaurant_list
 - action_info_restaurant
 - action_reserve_table
 - action_review_restaurant
 - action_cuisines_list
 - action_start
+- action_get_all_reviews
 - action_restaurant_cuisine
 - action_get_reservations
 - action_get_reviews
@@ -314,7 +353,7 @@ actions:
 - validate_info_restaurant_form
 - validate_reservation_form
 - validate_review_form
-#- utter_help_specific
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
