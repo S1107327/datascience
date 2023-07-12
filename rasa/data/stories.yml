@@ -241,3 +241,196 @@ stories:
   - action: action_clear_form_slots
   - action: utter_review_stopped
   - action: utter_need_something_else
+
+- story: Stop than change idea
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Regina Caterers
+  - slot_was_set:
+    - requested_slot: people_number
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: deny
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - slot_was_set:
+    - date: 12-12-2023
+  - slot_was_set:
+    - requested_slot: time
+  - slot_was_set:
+    - time: 19:45
+  - slot_was_set:
+    - requested_slot: allergies
+  - slot_was_set:
+    - allergies: No we got no allergies
+  - slot_was_set:
+    - requested_slot: name
+  - slot_was_set:
+    - name: Lorenzo
+  - slot_was_set:
+    - requested_slot: phone_number
+  - slot_was_set:
+    - phone_number: '1234567890'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_reservation_info
+  - action: utter_ask_reservation_confirm
+  - intent: confirm_reservation
+  - action: action_reserve_table
+  - action: utter_confirm_reservation
+
+- story: Stop than change idea 2
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Regina Caterers
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: deny
+  - action: reservation_form
+  - slot_was_set:
+    - requested_slot: date
+  - slot_was_set:
+    - date: 12-12-2023
+  - slot_was_set:
+    - requested_slot: time
+  - slot_was_set:
+    - time: 19:45
+  - slot_was_set:
+    - requested_slot: allergies
+  - slot_was_set:
+    - allergies: No we got no allergies
+  - slot_was_set:
+    - requested_slot: name
+  - slot_was_set:
+    - name: Lorenzo
+  - slot_was_set:
+    - requested_slot: phone_number
+  - slot_was_set:
+    - phone_number: '1234567890'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_reservation_info
+  - action: utter_ask_reservation_confirm
+  - intent: confirm_reservation
+  - action: action_reserve_table
+  - action: utter_confirm_reservation
+
+- story: Stop than change idea 3
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Regina Caterers
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - slot_was_set:
+    - date: 12-12-2023
+  - slot_was_set:
+    - requested_slot: time
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: deny
+  - action: reservation_form
+  - slot_was_set:
+    - requested_slot: time
+  - slot_was_set:
+    - time: 19:45
+  - slot_was_set:
+    - requested_slot: allergies
+  - slot_was_set:
+    - allergies: No we got no allergies
+  - slot_was_set:
+    - requested_slot: name
+  - slot_was_set:
+    - name: Lorenzo
+  - slot_was_set:
+    - requested_slot: phone_number
+  - slot_was_set:
+    - phone_number: '1234567890'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_reservation_info
+  - action: utter_ask_reservation_confirm
+  - intent: confirm_reservation
+  - action: action_reserve_table
+  - action: utter_confirm_reservation
+
+- story: Stop than change idea 4
+  steps:
+  - intent: reservation
+  - action: reservation_form
+  - active_loop: reservation_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_reservation
+  - slot_was_set:
+    - restaurant_name_reservation: Regina Caterers
+  - slot_was_set:
+    - requested_slot: people_number
+  - slot_was_set:
+    - people_number: 10
+  - slot_was_set:
+    - requested_slot: date
+  - slot_was_set:
+    - date: 12-12-2023
+  - slot_was_set:
+    - requested_slot: time
+  - slot_was_set:
+    - time: 19:45
+  - slot_was_set:
+    - requested_slot: allergies
+  - slot_was_set:
+    - allergies: No we got no allergies
+  - slot_was_set:
+    - requested_slot: name
+  - slot_was_set:
+    - name: Lorenzo
+  - slot_was_set:
+    - requested_slot: phone_number
+  - intent: stop
+  - action: utter_confirm_stop
+  - intent: deny
+  - action: reservation_form
+  - slot_was_set:
+    - requested_slot: phone_number
+  - slot_was_set:
+    - phone_number: '1234567890'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_reservation_info
+  - action: utter_ask_reservation_confirm
+  - intent: confirm_reservation
+  - action: action_reserve_table
+  - action: utter_confirm_reservation

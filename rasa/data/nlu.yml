@@ -225,6 +225,7 @@ nlu:
     - Can you show me best restaurants on the platform
     - I want to eat well, tell me which good restaurants are there
     - Best restaurants
+    - What restaurants are available?
     - /top_restaurant_list
 - intent: all_restaurant_list
   examples: |
@@ -233,12 +234,15 @@ nlu:
     - I want to know every restaurants name in the platform
     - Can you tell me all restaurants in which I can book a table
     - Show me every restaurant registered
+    - Give me the list of all restaurants
+    - I want the list of all restaurants
     - /all_restaurant_list
 - intent: restaurant_info
   examples: |
     - I want to get more infos about a restaurant
     - Can you give me more info about restaurants
     - I want a detailed description of a restaurant
+    - Give me the list of restaurants
     - /restaurant_info
 - intent: cuisine_list
   examples: |
@@ -259,6 +263,8 @@ nlu:
     - I'm interested in knowing which diners offers [Turkish](cuisine) cuisine?
     - I want all bar that offers [Irish](cuisine) dishes
     - Tell me which fast foods are available for [Hamburgers](cuisine)
+    - Give me [Italian](cuisine) restaurants
+    - What are [American](cuisine) restaurants
     - [Caribbean](cuisine) cuisine diners?
 - intent: reservation
   examples: |

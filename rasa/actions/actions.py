@@ -120,7 +120,7 @@ class ValidateRestaurantInfoForm(FormValidationAction):
         for restaurant in restaurants:
             restaurant_name_list.append(str(restaurant['name']).lower())
         if slot_value.lower() not in restaurant_name_list:
-            dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service")
+            dispatcher.utter_message(response="utter_restaurant_not_registered", restaurant_nr= f"{slot_value}")
             return {"restaurant_name_info": None}
         return {"restaurant_name_info": slot_value}
 
@@ -153,7 +153,6 @@ class ActionInfoRestaurant(Action):
         return [SlotSet("restaurant_name_info", None)]
 
 ### RESERVATIONS ACTIONS ###
-#TODO: Inserire validation campi della form di prenotazione di un tavolo
 class ActionReserveTable(Action):
     def name(self) -> Text:
         return "action_reserve_table"
@@ -242,11 +241,10 @@ class ValidateReservationForm(FormValidationAction):
         for restaurant in restaurants:
             restaurant_name_list.append(str(restaurant['name']).lower())
         if slot_value.lower() not in restaurant_name_list:
-            dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service.")
+            dispatcher.utter_message(response="utter_restaurant_not_registered", restaurant_nr= f"{slot_value}")
             return {"restaurant_name_reservation": None}
         return {"restaurant_name_reservation": slot_value}
 
-    #TODO: validare anche se il numero di posti disponibili nel db è sufficiente, ancora non fatto lo script
     def validate_people_number(
         self,
         slot_value: Any,
@@ -312,7 +310,6 @@ class ValidateReservationForm(FormValidationAction):
         return {'time':None}
 
 ### REVIEW ACTIONS ###
-##TODO: Funzioni su mongo per prendere i dati
 class ActionReviewRestaurant(Action):
     def name(self) -> Text:
         return "action_review_restaurant"
@@ -381,7 +378,7 @@ class ValidateReviewForm(FormValidationAction):
         for restaurant in restaurants:
             restaurant_name_list.append(str(restaurant['name']).lower())
         if slot_value.lower() not in restaurant_name_list:
-            dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service.")
+            dispatcher.utter_message(response="utter_restaurant_not_registered", restaurant_nr= f"{slot_value}")
             return {"restaurant_name_review": None}
         return {"restaurant_name_review": slot_value}
 

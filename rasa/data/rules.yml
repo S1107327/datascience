@@ -107,6 +107,7 @@ rules:
     - intent: deny
   - action: action_clear_form_slots
   - action: utter_deny_reservation
+  - action: utter_need_something_else
 
 - rule: Asking for reservations
   steps:
@@ -125,8 +126,8 @@ rules:
     - intent: review
     - action: review_form
     - active_loop: review_form
-    - action: action_review_restaurant
-    - action: utter_goodbye
+    # - action: action_review_restaurant
+    # - action: utter_goodbye
 
 - rule: Submit Review Form
   condition:
@@ -174,3 +175,8 @@ rules:
     - intent: show_all_review
     - action: action_get_all_reviews
     - action: utter_need_something_else
+
+- rule: General Fallback 
+  steps:
+    - intent: nlu_fallback
+    - action: utter_default_fallback
