@@ -14,7 +14,7 @@ def seeding_reviews(connection: MongoDBConnector):
             review = dict()
             review['score'] = randint(1,5)
             review['body'] = f"Utente{i} Test Review"
-            review['date_review'] = date(2023, 6, randint(1,30)).strftime("%d-%m-%Y")
+            review['date_review'] = date(2023, 6, randint(1,30)).strftime("%Y-%m-%d")
             review['name'] = f"Utente{i}"
             reviews.append(review)
         connection.client['rasa_db']['restaurants'].update_one({"restaurant_id": restaurant['restaurant_id']}, {"$set": {"reviews": reviews}})
@@ -30,9 +30,9 @@ def seeding_reservations(connection: MongoDBConnector):
             reservation['restaurant_name'] = restaurants[0].split(':')[1] if i % 2 == 0 else restaurants[1].split(':')[1]
             reservation['restaurant_id'] = restaurants[0].split(':')[0] if i % 2 == 0 else restaurants[1].split(':')[0]
             if i == 3:
-                reservation['date'] = date(2023, 7, randint(8,30)).strftime("%d-%m-%Y")
+                reservation['date'] = date(2023, 7, randint(8,30)).strftime("%Y-%m-%d")
             else:
-                reservation['date'] = date(2023, 6, randint(1, 30)).strftime("%d-%m-%Y")
+                reservation['date'] = date(2023, 6, randint(1, 30)).strftime("%Y-%m-%d")
             reservation['time'] = "19:00"
             reservation['allergies'] = "no"
             reservation['name'] = "Utente1" if phone_number == phone_numbers[0] else "Utente2"

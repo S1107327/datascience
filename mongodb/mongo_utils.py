@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from datetime import datetime
 import re
 
 class MongoDBConnector:
@@ -33,19 +34,37 @@ class MongoDBConnector:
         count = self.client['rasa_db']['restaurants'].count_documents({"cuisine": re.compile(cuisine, re.IGNORECASE)})
         return restaurant_cuisine, count
 
-    def get_active_client_reservations(self, phone_number):
+    def get_restaurant_of_borough(self, borough):
+        restaurant_borough = self.client['rasa_db']['restaurants'].find({"borough": re.compile(borough, re.IGNORECASE)})
+        count = self.client['rasa_db']['restaurants'].count_documents({"borough": re.compile(borough, re.IGNORECASE)})
+        return restaurant_borough, count
+
+
+    def get_client_reservations(self, phone_number, active=True):
         reservations = self.client['rasa_db']['reservation'].find({"phone_number": phone_number})
-        return reservations
+        list_reservation = list(reservations)
+        if active:
+            active_reservation = list(filter(lambda x: datetime.strptime(x['date'], "%Y-%m-%d") >= datetime.today(), list_reservation))
+            return active_reservation
+        else:
+            past_reservation = list(filter(lambda x: datetime.strptime(x['date'], "%Y-%m-%d") < datetime.today(), list_reservation))
+            return past_reservation
     
     ##TODO: Recupero della collezione dal documento (SOLO SE SI MODIFICA SOTTO)
     ##TODO: prenderne 10
-    def get_restaurant_reviews(self, name):
+    def get_restaurant_reviews(self, name, limit=True):
         reviews = []
-        restaurant_reviews = self.client['rasa_db']['restaurants'].aggregate([{"$match": {"name": re.compile(name, re.IGNORECASE)}},
-                                                                              {"$unwind": "$reviews" },
-                                                                              {"$sort": {"reviews.date_review": -1}},
-                                                                              {"$project": {"reviews":1}},
-                                                                              {"$limit": 5}])
+        if limit:
+            restaurant_reviews = self.client['rasa_db']['restaurants'].aggregate([{"$match": {"name": re.compile(name, re.IGNORECASE)}},
+                                                                                  {"$unwind": "$reviews" },
+                                                                                  {"$sort": {"reviews.date_review": -1}},
+                                                                                  {"$project": {"reviews":1}},
+                                                                                  {"$limit": 5}])
+        else:
+            restaurant_reviews = self.client['rasa_db']['restaurants'].aggregate([{"$match": {"name": re.compile(name, re.IGNORECASE)}},
+                                                                                  {"$unwind": "$reviews"},
+                                                                                  {"$sort": {"reviews.date_review": -1}},
+                                                                                  {"$project": {"reviews": 1}}])
         for review in restaurant_reviews:
             reviews.append(review['reviews'])
         return reviews

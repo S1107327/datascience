@@ -3,6 +3,7 @@ intents:
 - affirm
 - all_restaurant_list
 - bot_challenge
+- boroughs
 - confirm_reservation
 - confirm_review
 - cuisine_form
@@ -19,10 +20,14 @@ intents:
 - nlu_fallback
 - reservation
 - reservation_list
+- reservation_past_list
 - reservation_list_phone
 - restaurant_info
 - review
+- set_date_for_reservation
+- set_score
 - set_people_number
+- set_time_for_reservation
 - show_all_reviews
 - show_review
 - start
@@ -34,7 +39,8 @@ intents:
 - top_restaurant_list
 
 entities:
-- people_number
+- integer_number
+- borough
 - restaurant_name_reservation
 - restaurant_name_info
 - restaurant_name_review
@@ -67,10 +73,10 @@ slots:
       - active_loop: reservation_form
         requested_slot: restaurant_name_reservation
   people_number:
-    type: float
+    type: any
     mappings:
     - type: from_entity
-      entity: people_number
+      entity: integer_number
       conditions:
       - active_loop: reservation_form
         requested_slot: people_number
@@ -141,8 +147,8 @@ slots:
   score_review:
     type: any
     mappings:
-    - type: from_text
-      entity: score_review
+    - type: from_entity
+      entity: integer_number
       conditions:
       - active_loop: review_form
         requested_slot: score_review
@@ -153,6 +159,13 @@ slots:
         conditions:
           - active_loop: show_review_form
             requested_slot: restaurant_name_review_list
+  cache_phone_number:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: phone_number
+        conditions:
+          - active_loop: null
   help_category:
     type: text
     mappings:
@@ -161,7 +174,7 @@ slots:
         conditions:
           - active_loop: help_form
             requested_slot: help_category
-     
+
 forms:
   reservation_form:
     required_slots:
@@ -260,29 +273,29 @@ responses:
 
   utter_help:
     - text: |
-            i can help you decide where to go eat! you can ask me multiple things.
-            you can ask me info about restaurants in the ny area. specifically, you can ask me:
-              -the list of all the restaurants in the area.
-              -all of the possibile cuisine types you can choose from.
-              -which restaurants offer a specific type of cuisine.
-              -info about a restaurant you're curious of.
-            you can then ask me to reserve a place in a restaurant of you choice! for that i will need some information:
-              -in which place you want to go, of course.
-              -how many people you want to reserve for.
-              -the date of the reservation.
-              -at what time you would like to go eat.
-              -whether you suffer from some allergies.
-              -your name.
-              -your phone number.
-            once you've made one or more reservations, you can also ask me to remind you of them.
-            i hope that i was clear enough!
+            I can help you decide where to go eat! You can ask me multiple things.
+            You can ask me info about restaurants in the NY area. Specifically, you can ask me:
+              -The list of all the restaurants in the area.
+              -All of the possibile cuisine types you can choose from.
+              -Which restaurants offer a specific type of cuisine.
+              -Info about a restaurant you're curious of.
+            You can then ask me to reserve a place in a restaurant of you choice! For that I will need some information:
+              -In which place you want to go, of course.
+              -How many people you want to reserve for.
+              -The date of the reservation.
+              -At what time you would like to go eat.
+              -Whether you suffer from some allergies.
+              -Your name.
+              -Your phone number.
+            Once you've made one or more reservations, you can also ask me to remind you of them.
+            I hope that I was clear enough!
 
   utter_ask_reservation_confirm:
-  - text: do you confirm your reservation?
+  - text: Do you confirm your reservation?
     buttons:
-    - title: yes
+    - title: YES
       payload: /confirm_reservation
-    - title: no
+    - title: NO
       payload: /deny_reservation
   utter_confirm_reservation:
   - text: well done! your resevation has been confirmed
@@ -291,7 +304,7 @@ responses:
   - text: Ok, reservation has been cancelled
   - text: Done, i've cancelled the reservation
   utter_ask_restaurant_name_review:
-  - text: which restaurant would you like to review?
+  - text: Which restaurant would you like to review?
   utter_ask_review_body:
   - text: please give us your review, we really value your feedback!
   - text: if you want leave a review, we really appreciate that
@@ -302,7 +315,7 @@ responses:
   - text: from 1-5, how would you rate your experience at {restaurant_name_review}?
   - text: please, rate you exeperience at {restaurant_name_review} from 1-5
   utter_ask_restaurant_name_review_list:
-  - text: which restaurant do you want to read reviews about?
+  - text: Which restaurant do you want to read reviews about?
   utter_need_something_else:
   - text: i'm here if you need something else!
   - text: if you still need me i'm here, ask anything you want!
@@ -321,15 +334,15 @@ responses:
   - text: your review has been cancelled
   - text: ok, i cancelled your review request
   utter_ask_review_confirm:
-    - text: do you want to leave this review and this score?
+    - text: Do you want to leave this review and this score?
       buttons:
-        - title: yes
+        - title: YES
           payload: /confirm_review
-        - title: no
+        - title: NO
           payload: /deny_review
   utter_confirm_review:
     - text: well done! your feedback is important for us! thank for improve other users experience!
-    - text: Thank you for leaving a review, this will help to improve our service! 
+    - text: Thank you for leaving a review, this will help to improve our service!
   utter_deny_review:
     - text: review draft cancelled
     - text: Ok, you review graft has been cancelled
@@ -338,7 +351,7 @@ responses:
     - text: i didn't catch what you said, please rephrase it.
     - text: ops... i didn't understand you, repeat it pls
   utter_restaurant_not_registered:
-    - text: sorry but the restaurant {restaurant_nr} is not registered on the service 
+    - text: sorry but the restaurant {restaurant_nr} is not registered on the service
     - text: restaurant {restaurant_nr} isn't registered, please give me a name of a registered restaurant
 
 actions:
@@ -378,9 +391,12 @@ actions:
 - action_review_restaurant
 - action_cuisines_list
 - action_start
+- action_get_restaurants_of_borough
+- action_get_all_reviews_after_first
 - action_get_all_reviews
 - action_restaurant_cuisine
-- action_get_reservations
+- action_get_active_reservations
+- action_get_past_reservations
 - action_get_reviews
 - action_show_reservation_info
 - action_show_review_info
@@ -388,6 +404,7 @@ actions:
 - validate_info_restaurant_form
 - validate_reservation_form
 - validate_review_form
+- validate_show_review_form
 
 session_config:
   session_expiration_time: 60

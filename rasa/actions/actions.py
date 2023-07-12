@@ -102,7 +102,31 @@ class ActionRestaurantOfCuisine(Action, BaseException):
             dispatcher.utter_message(text=text_to_display)
             return[]
 
+class ActionRestaurantsOfBorough(Action):
+    def name(self) -> Text:
+        return "action_get_restaurants_of_borough"
 
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        if len(tracker.latest_message['entities']):
+            borough = tracker.latest_message['entities'][0]['value']
+        else:
+            dispatcher.utter_message(text="Borough you asked for doesn't exist, please check spelling and retype")
+            return []
+        mongo_db = MongoDBConnector()
+        restaurants, count = mongo_db.get_restaurant_of_borough(borough)
+        if count == 0:
+            dispatcher.utter_message(text=f"There are no restaurants registered on the service in {borough}")
+        else:
+            text_to_display = f"Here are the restaurants available in {borough}\n"
+            for restaurant in restaurants:
+                text_to_display += f"{restaurant['name']}\n"
+            dispatcher.utter_message(text=text_to_display)
+            return[]
 class ValidateRestaurantInfoForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_info_restaurant_form"
@@ -172,9 +196,9 @@ class ActionReserveTable(Action):
         mongo_db.save_reservation(name, reservation)
         return [AllSlotsReset()]
 
-class ActionShowReservations(Action):
+class ActionShowActiveReservations(Action):
     def name(self) -> Text:
-        return "action_get_reservations"
+        return "action_get_active_reservations"
 
     def run(
         self,
@@ -184,8 +208,9 @@ class ActionShowReservations(Action):
     ) -> List[Dict[Text, Any]]:
         client = tracker.latest_message['entities'][0]['value']
         mongo_db = MongoDBConnector()
-        reservations = mongo_db.get_active_client_reservations(client)
-        if len(reservations) > 0:
+        reservations = mongo_db.get_client_reservations(client)
+        count = len(reservations)
+        if count > 0:
             text_to_display = f"Here are reservations for {client}\n"
             for reservation in reservations:
                 if int(reservation['people_number']) > 1:
@@ -193,9 +218,44 @@ class ActionShowReservations(Action):
                 else:
                     text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
             dispatcher.utter_message(text=text_to_display)
+            dispatcher.utter_message(text="If you want to see your past reservations also, click MORE!",
+                                     buttons=[{"title": "MORE", "payload": f"/reservation_past_list {client}"}])
         else:
             dispatcher.utter_message(text=f"There are no active reservations for \"{client}\"")
+            dispatcher.utter_message(text="If you want to see your past reservations also, click MORE!",
+                                     buttons=[{"title": "MORE", "payload": f"/reservation_past_list {client}"}])
+        return [SlotSet("cache_phone_number", client)]
 
+class ActionShowPastActiveReservations(Action):
+    def name(self) -> Text:
+        return "action_get_past_reservations"
+
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        if len(tracker.latest_message['entities']) > 0:
+            client = tracker.latest_message['entities'][0]['value']
+        else:
+            client = tracker.get_slot("cache_phone_number")
+            if client is None:
+                dispatcher.utter_message(text="You cannot access past reservations if you haven't asked for active reservations")
+                return []
+        mongo_db = MongoDBConnector()
+        reservations = mongo_db.get_client_reservations(client, active=False)
+        if len(reservations) > 0:
+            text_to_display = f"Here are past reservations for {client}\n"
+            for reservation in reservations:
+                if int(reservation['people_number']) > 1:
+                    text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                else:
+                    text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+            dispatcher.utter_message(text=text_to_display)
+        else:
+            dispatcher.utter_message(text=f"There are no past reservations for \"{client}\"")
+        return [SlotSet("cache_phone_number", None)]
 
 class ActionClearFormSlots(Action):
     def name(self) -> Text:
@@ -342,10 +402,66 @@ class ActionShowReviews(Action):
         reviews = mongo_db.get_restaurant_reviews(restaurant)
         dispatcher.utter_message(text=f"Here are the 5 latest reviews for {restaurant}\n")
         for review in reviews:
-            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"",
-                                     button={"title": "MORE REVIEWS", "payload": "/show_all_reviews"})
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
+        dispatcher.utter_message(text="Click MORE to read remaining reviews",
+                                 buttons=[{"title": "MORE", "payload": "/show_all_reviews"}])
         return []
 
+class ActionShowAllAfterReviews(Action):
+    def name(self) -> Text:
+        return "action_get_all_reviews_after_first"
+
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        restaurant = tracker.get_slot("restaurant_name_review_list")
+        mongo_db = MongoDBConnector()
+        reviews = mongo_db.get_restaurant_reviews(restaurant, limit=False)
+        dispatcher.utter_message(text=f"Here are the remaining reviews for {restaurant}\n")
+        for review in reviews[5:]:
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
+        return [SlotSet("restaurant_name_review_list", None)]
+
+class ActionShowAllReviews(Action):
+    def name(self) -> Text:
+        return "action_get_all_reviews"
+
+    def run(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: Tracker,
+        domain: "DomainDict",
+    ) -> List[Dict[Text, Any]]:
+        restaurant = tracker.get_slot("restaurant_name_review_list")
+        mongo_db = MongoDBConnector()
+        reviews = mongo_db.get_restaurant_reviews(restaurant, limit=False)
+        dispatcher.utter_message(text=f"Here are all available reviews for {restaurant}\n")
+        for review in reviews:
+            dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
+        return [SlotSet("restaurant_name_review_list", None)]
+class ValidateShowReviewForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_show_review_form"
+
+    def validate_restaurant_name_review_list(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        mongo_db = MongoDBConnector()
+        restaurants = mongo_db.get_restaurant_names_list()
+        restaurant_name_list = []
+        for restaurant in restaurants:
+            restaurant_name_list.append(str(restaurant['name']).lower())
+        if slot_value.lower() not in restaurant_name_list:
+            dispatcher.utter_message(text=f"Sorry but the restaurant {slot_value} is not registered on the service.")
+            return {"restaurant_name_review_list": None}
+        return {"restaurant_name_review_list": slot_value}
 
 class ActionShowReviewInfo(Action):
     def name(self) -> Text:
@@ -356,8 +472,9 @@ class ActionShowReviewInfo(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         utter_text = "This are your review infos:\n"
         utter_text += f"Restaurant: {tracker.get_slot('restaurant_name_review')}\n"
-        utter_text += f"Text: {tracker.get_slot('review')}\n"
+        utter_text += f"Text: {tracker.get_slot('review_body')}\n"
         utter_text += f"From: {tracker.get_slot('name_review')}\n"
+        utter_text += f"Score: {tracker.get_slot('score_review')}"
         dispatcher.utter_message(text=utter_text)
         return []
 

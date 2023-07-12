@@ -115,9 +115,21 @@ rules:
     - action: utter_respond_reservations
 
 - rule: Phone number got
+  condition:
+    - active_loop: null
   steps:
     - intent: reservation_list_phone
-    - action: action_get_reservations
+    - action: action_get_active_reservations
+
+- rule: Past Reservations
+  steps:
+    - intent: reservation_past_list
+    - action: action_get_past_reservations
+    - action: utter_need_something_else
+- rule: Restaurants in Borough
+  steps:
+    - intent: boroughs
+    - action: action_get_restaurants_of_borough
     - action: utter_need_something_else
 
 # Rules for reviews
@@ -170,13 +182,25 @@ rules:
     - active_loop: null
     - action: action_get_reviews
 
-- rule: Show all Reviews
+- rule: Show all other Reviews
+  condition:
+    - slot_was_set:
+        - restaurant_name_review_list: true
   steps:
-    - intent: show_all_review
+    - intent: show_all_reviews
+    - action: action_get_all_reviews_after_first
+    - action: utter_need_something_else
+
+- rule: Show All Reviews Form
+  steps:
+    - intent: show_all_reviews
+    - action: show_review_form
+    - active_loop: show_review_form
+    - active_loop: null
     - action: action_get_all_reviews
     - action: utter_need_something_else
 
-- rule: General Fallback 
+- rule: General Fallback
   steps:
     - intent: nlu_fallback
     - action: utter_default_fallback
