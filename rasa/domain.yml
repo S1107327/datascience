@@ -296,7 +296,7 @@ responses:
     - title: NO
       payload: /deny_reservation
   utter_confirm_reservation:
-  - text: well done! your resevation has been confirmed
+  - text: Well done! your resevation has been confirmed
   - text: done, reservation accepted!
   utter_deny_reservation:
   - text: Ok, reservation has been cancelled
@@ -304,33 +304,33 @@ responses:
   utter_ask_restaurant_name_review:
   - text: Which restaurant would you like to review?
   utter_ask_review_body:
-  - text: please give us your review, we really value your feedback!
-  - text: if you want leave a review, we really appreciate that
+  - text: Please give us your review, we really value your feedback!
+  - text: If you want leave a review, we really appreciate that
   utter_ask_name_review:
-  - text: please, may you tell me your name for the review?
-  - text: leave a name for the review
+  - text: Please, may you tell me your name for the review?
+  - text: Leave a name for the review
   utter_ask_score_review:
-  - text: from 1-5, how would you rate your experience at {restaurant_name_review}?
-  - text: please, rate you exeperience at {restaurant_name_review} from 1-5
+  - text: From 1-5, how would you rate your experience at {restaurant_name_review}?
+  - text: Please, rate you exeperience at {restaurant_name_review} from 1-5
   utter_ask_restaurant_name_review_list:
   - text: Which restaurant do you want to read reviews about?
   utter_need_something_else:
-  - text: i'm here if you need something else!
-  - text: if you still need me i'm here, ask anything you want!
-  - text: in case you need something else feel free to tell me everything
+  - text: I'm here if you need something else!
+  - text: If you still need me i'm here, ask anything you want!
+  - text: In case you need something else feel free to tell me everything
   utter_help_generic:
     - text: |
-            i can help you decide where to go eat! you can ask me multiple things.
+            I can help you decide where to go eat! you can ask me multiple things.
               - you can ask me info about restaurants in the ny area.
               - you can then ask me to reserve a place in a restaurant of you choice!
               - and finally, after you've had your meal, you can leave a review for the other users to read.
-            do you need more information on one of these functionalities?
+            Do you need more information on one of these functionalities?
   utter_help_which_type:
-    - text: with what you need help? choose between "info", "reserve", and "review".
-    - text: you need help about "info", "reserve" or "review"?
+    - text: With what you need help? choose between "info", "reserve", and "review".
+    - text: You need help about "info", "reserve" or "review"?
   utter_review_stopped:
-  - text: your review has been cancelled
-  - text: ok, i cancelled your review request
+  - text: Your review has been cancelled
+  - text: Ok, i cancelled your review request
   utter_ask_review_confirm:
     - text: Do you want to leave this review and this score?
       buttons:
@@ -339,18 +339,18 @@ responses:
         - title: NO
           payload: /deny_review
   utter_confirm_review:
-    - text: well done! your feedback is important for us! thank for improve other users experience!
+    - text: Well done! your feedback is important for us! thank for improve other users experience!
     - text: Thank you for leaving a review, this will help to improve our service!
   utter_deny_review:
-    - text: review draft cancelled
-    - text: Ok, you review graft has been cancelled
+    - text: Review draft cancelled
+    - text: Ok, you review draft has been cancelled
   utter_default_fallback:
-    - text: sorry, i didn't understand. can you repeat please?
-    - text: i didn't catch what you said, please rephrase it.
-    - text: ops... i didn't understand you, repeat it pls
+    - text: Sorry, i didn't understand. can you repeat please?
+    - text: I didn't catch what you said, please rephrase it.
+    - text: Ops... i didn't understand you, repeat it pls
   utter_restaurant_not_registered:
-    - text: sorry but the restaurant {restaurant_nr} is not registered on the service
-    - text: restaurant {restaurant_nr} isn't registered, please give me a name of a registered restaurant
+    - text: Sorry but the restaurant {restaurant_nr} is not registered on the service
+    - text: Restaurant {restaurant_nr} isn't registered, please give me a name of a registered restaurant
 
 actions:
 - action_clear_form_slots

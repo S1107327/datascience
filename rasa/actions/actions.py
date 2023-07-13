@@ -528,6 +528,7 @@ class ActionShowSpecificHelp(Action):
             case "info":
                 dispatcher.utter_message(text="""I can give you various kinds of information. Specifically:\n
                                          \t- The list of all the restaurants in the area.\n
+                                         \t- The list of restaurants in a specific borough.\n
                                          \t- All of the possibile cuisine types you can choose from.\n
                                          \t- Which restaurants offer a specific type of cuisine.\n
                                          \t- Info about a restaurant you're curious of.""")
