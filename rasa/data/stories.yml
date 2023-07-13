@@ -434,3 +434,33 @@ stories:
   - intent: confirm_reservation
   - action: action_reserve_table
   - action: utter_confirm_reservation
+
+
+- story: From first 5 reviews to all reviews
+  steps:
+  - intent: show_review
+  - action: action_clear_form_slots
+  - action: show_review_form
+  - active_loop: show_review_form
+  - slot_was_set:
+    - requested_slot: restaurant_name_review_list
+  - slot_was_set:
+    - restaurant_name_review_list: true
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_get_reviews
+  - intent: show_all_reviews
+  - action: action_get_all_reviews_after_first
+  - action: utter_need_something_else
+
+# La si è dovuta fare come story perché quella sopra contraddiceva la 
+# rule show all reviews
+- story: Show all reviews
+  steps:
+  - intent: show_all_reviews
+  - action: show_review_form
+  - active_loop: show_review_form
+  - active_loop: null
+  - action: action_get_all_reviews
+  - action: utter_need_something_else

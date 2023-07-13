@@ -32,8 +32,6 @@ intents:
 - show_review
 - start
 - stop
-- set_date_for_reservation
-- set_time_for_reservation
 - help_generic
 - choose_help_category
 - top_restaurant_list

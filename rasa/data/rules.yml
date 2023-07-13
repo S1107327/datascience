@@ -182,23 +182,23 @@ rules:
     - active_loop: null
     - action: action_get_reviews
 
-- rule: Show all other Reviews
-  condition:
-    - slot_was_set:
-        - restaurant_name_review_list: true
-  steps:
-    - intent: show_all_reviews
-    - action: action_get_all_reviews_after_first
-    - action: utter_need_something_else
+# - rule: Show all other Reviews
+#   condition:
+#     - slot_was_set:
+#         - restaurant_name_review_list: true
+#   steps:
+#     - intent: show_all_reviews
+#     - action: action_get_all_reviews_after_first
+#     - action: utter_need_something_else
 
-- rule: Show All Reviews Form
-  steps:
-    - intent: show_all_reviews
-    - action: show_review_form
-    - active_loop: show_review_form
-    - active_loop: null
-    - action: action_get_all_reviews
-    - action: utter_need_something_else
+# - rule: Show All Reviews Form
+#   steps:
+#     - intent: show_all_reviews
+#     - action: show_review_form
+#     - active_loop: show_review_form
+#     - active_loop: null
+#     - action: action_get_all_reviews
+#     - action: utter_need_something_else
 
 - rule: General Fallback
   steps:
