@@ -215,20 +215,24 @@ nlu:
     - smdcspkèsj
 - intent: top_restaurant_list
   examples: |
-    - Which restaurants are registered on the platform?
-    - I want a list of restaurants
-    - restaurants
-    - List of restaurants
-    - Tell me in which restaurants I can reserve a table
-    - Which restaurant are there?
-    - Show me  restaurants on the platform
+    - Which registered restaurants are the best on the platform?
+    - I want a list of the best restaurants
+    - best restaurants
+    - List of the best restaurants
+    - Show me the best restaurants on the platform
     - Can you show me best restaurants on the platform
     - I want to eat well, tell me which good restaurants are there
     - Best restaurants
-    - What restaurants are available?
+    - Give me the list of the best restaurants
+    - Top restaurants
+    - I want to see the top restaurants in the area
+    - Which restaurants would you suggest?
     - /top_restaurant_list
 - intent: all_restaurant_list
   examples: |
+    - What restaurants are available?
+    - Which restaurants are there?
+    - Tell me in which restaurants I can reserve a table
     - Show me all restaurant on the platform
     - All restaurants please
     - I want to know every restaurants name in the platform
@@ -236,13 +240,20 @@ nlu:
     - Show me every restaurant registered
     - Give me the list of all restaurants
     - I want the list of all restaurants
+    - List the restaurants
     - /all_restaurant_list
 - intent: restaurant_info
   examples: |
-    - I want to get more infos about a restaurant
+    - I want to get more info about a restaurant
     - Can you give me more info about restaurants
     - I want a detailed description of a restaurant
-    - Give me the list of restaurants
+    - Give me the info of restaurants
+    - info on restaurants please
+    - what about the restaurants?
+    - information plaase
+    - give me information about a restaurant
+    - i need information
+    - i want info on where to eat
     - /restaurant_info
 - intent: cuisine_list
   examples: |
@@ -252,6 +263,10 @@ nlu:
     - Please tell me which cuisines the restaurants offers
     - Which are the available cuisines?
     - What kind of cuisine offer restaurant in NY?
+    - types of cuisine?
+    - what kind of food can i eat?
+    - type of food
+    - which food types are present?
     - Cuisines?
     - /cuisine_list
 - intent: cuisine_form
@@ -266,6 +281,7 @@ nlu:
     - Give me [Italian](cuisine) restaurants
     - What are [American](cuisine) restaurants
     - [Caribbean](cuisine) cuisine diners?
+    - Restaurants with [Italian](cuisine) food
 - intent: boroughs
   examples: |
     - Which restaurant are located in [Manhattan](borough)?
@@ -281,6 +297,11 @@ nlu:
     - Tell me which diners there are in borough [Manhattan](borough)
 - intent: reservation
   examples: |
+    - I want to reserve a place
+    - I want to reserve a table
+    - I want to book a place
+    - Book a table
+    - Reserve a place
     - Hello, I would like to make a reservation
     - Could you please reserve a table
     - I'd like to book a table
@@ -546,6 +567,36 @@ nlu:
     - Sushi
     - Thai
     - Turkish
+    - american
+    - bagels/pretzels
+    - bakery
+    - caribbean
+    - chicken
+    - chinese
+    - continental
+    - delicatessen
+    - donuts
+    - finnish
+    - fish
+    - french
+    - greek
+    - hamburgers
+    - ice cream, gelato, yogurt, ices
+    - indian
+    - irish
+    - italian
+    - jewish/kosher
+    - japanese
+    - kebab
+    - lebanese
+    - mexican
+    - pizza
+    - poke
+    - sandwiches/salads/mixed buffet
+    - steak
+    - sushi
+    - thai
+    - turkish
 
 #HELP
 - intent: help_generic

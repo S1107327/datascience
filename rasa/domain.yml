@@ -201,7 +201,7 @@ forms:
 
 responses:
   utter_start:
-  - text: Welcome guest, I am Restaurant Bot, the new amazing service to make reservations and leave reviews in NY restaurants. In order to help you, use the below buttons to start interacting
+  - text: Welcome! I am Restaurant Bot, the new amazing service to make reservations and leave reviews in NY restaurants. Plaese use the below buttons to start interacting!
     buttons:
     - title: HELP
       payload: /help
@@ -210,11 +210,15 @@ responses:
     - title: CUISINES
       payload: /cuisine_list
   utter_stop:
-  - text: Thank you for choosing the service. Have a nice day!
-  - text: I hope my help was useful. Bye, see you soon!
+  - text: |
+          Thank you for choosing our service. We hope to see you again!
+          Have a great day, and happy eating!
+  - text: |
+          All right, I hope my help was useful!
+          Bye bye, see you again!
   utter_greet:
   - text: Hey! How are you?
-  - text: Hey! What's up?
+  - text: Hey there! What's up?
   utter_cheer_up:
   - text: 'Here is something to cheer you up:'
     image: https://i.imgur.com/nGF1K8f.jpg
@@ -233,41 +237,55 @@ responses:
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_ask_restaurant_name_info:
-  - text: Which restaurant you want info about?
-  - text: Tell me the name of the restaurant you want info about
+  - text: Ok, which restaurant would you want info about?
+  - text: All right! Please, tell me the name of the restaurant you want info about.
   utter_submit_info:
   - text: Got it!
   - text: Done!
   utter_confirm_stop:
-  - text: Do you want to stop the reservation process?
-  - text: You really whant to cancel the reservation?
+  - text: Do you really want to stop the reservation process?
+  - text: Are you really sure you want to cancel the reservation?
   utter_reservation_stopped:
   - text: The reservation has been cancelled. Do you need something else?
-  - text: Done! Reservation process has been cancelled
+  - text: Done! The reservation process has been cancelled.
   utter_ask_restaurant_name_reservation:
-  - text: Tell me the restaurant name for the reservation
-  - text: Which restaurant do you want to book at?
+  - text: |
+          Ok! For that, I need some info.
+          Firstly, tell me the name of the restaurant you want to reserve a place in:
+  - text: |
+          Ok! For that, I need some info, starting with the name of the restaurant:
+          which restaurant you want to make a reservation at?
   utter_ask_people_number:
-  - text: How many people would you like to reserve for?
-  - text: Please, tell me how many people will you be
+  - text: Now, how many people would you like to reserve for?
+  - text: Ok, and for how many people?
   utter_ask_date:
-  - text: 'On what date would you like to make the reservation? Date must be given in one of this format: YYYY-mm-dd, YYYYmmdd, YYYY/mm/dd, dd-mm-YYYY, dd/mm/YYYY'
-  - text: 'Please, give me a date for the reservation. Date must be given in one of this format: YYYY-mm-dd, YYYYmmdd, YYYY/mm/dd, dd-mm-YYYY, dd/mm/YYYY'
+  - text: |
+          On what date would you like to make the reservation? 
+          Be careful: the date must be given in one of these formats: YYYY-mm-dd, YYYYmmdd, YYYY/mm/dd, dd-mm-YYYY, dd/mm/YYYY
+          Otherwise, it's hard for me to understand!
+  - text: |
+          Please, give me a date for the reservation. 
+          Type the date in one of these formats: YYYY-mm-dd, YYYYmmdd, YYYY/mm/dd, dd-mm-YYYY, dd/mm/YYYY
+          if you don't, i can't really understand
   utter_ask_time:
-  - text: 'What time would you like to make the reservation? time must be in this format: hh:mm'
-  - text: 'When do you plan to eat? Time must be in this format: hh:mm'
+  - text: |
+          At what time would you like to make the reservation? 
+          Again, I need a specific format: hh:mm
+  - text: |
+          When do you plan to go eat? 
+          Please, type the time in this format: hh:mm
   utter_ask_allergies:
-  - text: Do you have any allergies?
-  - text: Got some allergies?
+  - text: Do you have any allergies? We will alert the restaurant in advance if you do!
+  - text: Is there anything you can't eat, by chance?
   utter_ask_name:
-  - text: Please, may you tell me your name for the reservation?
-  - text: Can you please leave a name for the reservation?
+  - text: Got it! Now please, could you tell me your name for the reservation?
+  - text: 'All right. Now I need you to leave a name for the reservation:'
   utter_ask_phone_number:
-  - text: What is your phone number?
-  - text: Please, can you leave your phone number for the reservation?
+  - text: And finally, what is your phone number?
+  - text: Lastly, please, can you leave me your phone number?
   utter_respond_reservations:
-  - text: "Sure! tell me your phone number to get your reservation"
-  - text: I need you phone number to find the reservations, please give it to me
+  - text: Sure! Tell me your phone number. I need it to get your reservation
+  - text: 'Ok. I need you phone number to find your reservations, so please write it here:'
 
   utter_help:
     - text: |
@@ -289,38 +307,38 @@ responses:
             I hope that I was clear enough!
 
   utter_ask_reservation_confirm:
-  - text: Do you confirm your reservation?
+  - text: Is everything correct? Do you want to confirm your reservation?
     buttons:
     - title: YES
       payload: /confirm_reservation
     - title: NO
       payload: /deny_reservation
   utter_confirm_reservation:
-  - text: Well done! your resevation has been confirmed
-  - text: done, reservation accepted!
+  - text: And we're done! Your resevation has been confirmed!
+  - text: Ok, we have finished, the reservation was accepted!
   utter_deny_reservation:
-  - text: Ok, reservation has been cancelled
-  - text: Done, i've cancelled the reservation
+  - text: Ok, the reservation has been cancelled.
+  - text: Done, I've cancelled the reservation.
   utter_ask_restaurant_name_review:
-  - text: Which restaurant would you like to review?
+  - text: Ok, which restaurant would you like to review?
   utter_ask_review_body:
-  - text: Please give us your review, we really value your feedback!
-  - text: If you want leave a review, we really appreciate that
+  - text: "Now please give us your review. Don't be afraid to be harsh: we really value your feedback!"
+  - text: "Ok! Write your review here. And be honest!"
   utter_ask_name_review:
-  - text: Please, may you tell me your name for the review?
-  - text: Leave a name for the review
+  - text: Can you tell me your name for the review?
+  - text: I now need your name. No anonymous reviews!
   utter_ask_score_review:
-  - text: From 1-5, how would you rate your experience at {restaurant_name_review}?
-  - text: Please, rate you exeperience at {restaurant_name_review} from 1-5
+  - text: And finally, from 1 to 5, how would you rate your experience at {restaurant_name_review}?
+  - text: "To complete the review process, please rate you experience at {restaurant_name_review} from 1 to 5:"
   utter_ask_restaurant_name_review_list:
-  - text: Which restaurant do you want to read reviews about?
+  - text: Sure thing! Which restaurant do you want to read reviews about?
   utter_need_something_else:
   - text: I'm here if you need something else!
-  - text: If you still need me i'm here, ask anything you want!
-  - text: In case you need something else feel free to tell me everything
+  - text: If you still need me I'm here, ask anything you want!
+  - text: In case you need something else, feel free to ask me anything!
   utter_help_generic:
     - text: |
-            I can help you decide where to go eat! you can ask me multiple things.
+            I can help you decide where to go eat! You can ask me multiple things.
               - you can ask me info about restaurants in the ny area.
               - you can then ask me to reserve a place in a restaurant of you choice!
               - and finally, after you've had your meal, you can leave a review for the other users to read.
@@ -345,12 +363,12 @@ responses:
     - text: Review draft cancelled
     - text: Ok, you review draft has been cancelled
   utter_default_fallback:
-    - text: Sorry, i didn't understand. can you repeat please?
+    - text: Sorry, I didn't understand. Can you please rephrase what you just wrote?
     - text: I didn't catch what you said, please rephrase it.
-    - text: Ops... i didn't understand you, repeat it pls
+    - text: Whoops... I didn't understand you! Please make it clearer!
   utter_restaurant_not_registered:
-    - text: Sorry but the restaurant {restaurant_nr} is not registered on the service
-    - text: Restaurant {restaurant_nr} isn't registered, please give me a name of a registered restaurant
+    - text: Sorry, but the restaurant {restaurant_nr} is not registered in our service. Plase try a different one!
+    - text: The restaurant {restaurant_nr} isn't present in our list, so please give me a name of a registered restaurant
 
 actions:
 - action_clear_form_slots

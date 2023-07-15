@@ -242,7 +242,7 @@ stories:
   - action: utter_review_stopped
   - action: utter_need_something_else
 
-- story: Stop than change idea
+- story: Stop then change idea
   steps:
   - intent: reservation
   - action: reservation_form
@@ -291,7 +291,7 @@ stories:
   - action: action_reserve_table
   - action: utter_confirm_reservation
 
-- story: Stop than change idea 2
+- story: Stop then change idea 2
   steps:
   - intent: reservation
   - action: reservation_form
@@ -339,7 +339,7 @@ stories:
   - action: action_reserve_table
   - action: utter_confirm_reservation
 
-- story: Stop than change idea 3
+- story: Stop then change idea 3
   steps:
   - intent: reservation
   - action: reservation_form
@@ -387,7 +387,7 @@ stories:
   - action: action_reserve_table
   - action: utter_confirm_reservation
 
-- story: Stop than change idea 4
+- story: Stop then change idea 4
   steps:
   - intent: reservation
   - action: reservation_form
