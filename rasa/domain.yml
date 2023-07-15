@@ -13,7 +13,7 @@ intents:
 - deny_review
 - goodbye
 - greet
-- make_reservation_phone
+#- make_reservation_phone
 - mood_bored
 - mood_great
 - mood_unhappy
@@ -21,7 +21,7 @@ intents:
 - reservation
 - reservation_list
 - reservation_past_list
-- reservation_list_phone
+#- reservation_list_phone
 - restaurant_info
 - review
 - set_date_for_reservation
@@ -35,6 +35,7 @@ intents:
 - help_generic
 - choose_help_category
 - top_restaurant_list
+- get_phone_number
 
 entities:
 - integer_number

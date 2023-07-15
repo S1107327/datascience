@@ -118,7 +118,7 @@ rules:
   condition:
     - active_loop: null
   steps:
-    - intent: reservation_list_phone
+    - intent: get_phone_number
     - action: action_get_active_reservations
 
 - rule: Past Reservations

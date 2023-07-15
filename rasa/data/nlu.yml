@@ -46,6 +46,8 @@ nlu:
       - yes more
       - you got it
       - for sure
+      - yeah
+      - Yeah! 
 - intent: deny
   examples: |
     - no
@@ -345,7 +347,7 @@ nlu:
     - /reservation_list_past [3450912673](phone_number)
     - /reservation_list_past [3216948512](phone_number)
 
-- intent: reservation_list_phone
+- intent: get_phone_number
   examples: |
     - My phone number is [3384023576](phone_number)
     - [3517468901](phone_number)
@@ -357,14 +359,6 @@ nlu:
     - All reservation for [3669054698](phone_number)
     - Tables reserved by [3387589012](phone_number)
     - reservations for [3670912970](phone_number)
-- intent: make_reservation_phone
-  examples: |
-    - My phone number is [3384023576](phone_number)
-    - [3517468901](phone_number)
-    - Yeah, my number is [3702365110](phone_number)
-    - yes, it is [3358190178](phone_number)
-    - My mobile phone number is [3342390145](phone_number)
-    - Number is [3317891265](phone_number)
     - Phone number for the reservation is [3670912970](phone_number)
 - intent: set_people_number
   examples: |
