@@ -284,6 +284,7 @@ nlu:
     - What are [American](cuisine) restaurants
     - [Caribbean](cuisine) cuisine diners?
     - Restaurants with [Italian](cuisine) food
+    - Where can I eat [Asian](cuisine)?
 - intent: boroughs
   examples: |
     - Which restaurant are located in [Manhattan](borough)?
@@ -332,6 +333,8 @@ nlu:
     - Please can you tell me active reservation I have?
     - Which are my current reservations
     - Show me active reservations
+    - I would like to see my reservations
+    - Remind me what i reserved please
 
 - intent: reservation_past_list
   examples: |

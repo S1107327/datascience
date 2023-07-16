@@ -286,7 +286,7 @@ responses:
   - text: Lastly, please, can you leave me your phone number?
   utter_respond_reservations:
   - text: Sure! Tell me your phone number. I need it to get your reservation
-  - text: 'Ok. I need you phone number to find your reservations, so please write it here:'
+  - text: 'Ok. I need your phone number to find your reservations, so please write it here:'
 
   utter_help:
     - text: |
@@ -323,14 +323,14 @@ responses:
   utter_ask_restaurant_name_review:
   - text: Ok, which restaurant would you like to review?
   utter_ask_review_body:
-  - text: "Now please give us your review. Don't be afraid to be harsh: we really value your feedback!"
-  - text: "Ok! Write your review here. And be honest!"
+  - text: "Finally, please give us your review. Don't be afraid to be harsh: we really value your feedback!"
+  - text: "Ok! To complete the process, write your review here. And be honest!"
   utter_ask_name_review:
   - text: Can you tell me your name for the review?
-  - text: I now need your name. No anonymous reviews!
+  - text: All right, now need your name. No anonymous reviews!
   utter_ask_score_review:
-  - text: And finally, from 1 to 5, how would you rate your experience at {restaurant_name_review}?
-  - text: "To complete the review process, please rate you experience at {restaurant_name_review} from 1 to 5:"
+  - text: From 1 to 5, how would you rate your experience at {restaurant_name_review}?
+  - text: "Please rate you experience at {restaurant_name_review} from 1 to 5:"
   utter_ask_restaurant_name_review_list:
   - text: Sure thing! Which restaurant do you want to read reviews about?
   utter_need_something_else:
@@ -345,7 +345,7 @@ responses:
               - and finally, after you've had your meal, you can leave a review for the other users to read.
             Do you need more information on one of these functionalities?
   utter_help_which_type:
-    - text: With what you need help? choose between "info", "reserve", and "review".
+    - text: With what do you need help? Choose between "info", "reserve", and "review".
     - text: You need help about "info", "reserve" or "review"?
   utter_review_stopped:
   - text: Your review has been cancelled
@@ -358,7 +358,7 @@ responses:
         - title: NO
           payload: /deny_review
   utter_confirm_review:
-    - text: Well done! your feedback is important for us! thank for improve other users experience!
+    - text: Well done! Your feedback is important to us! Thanks to it we can improve the experience of other users!
     - text: Thank you for leaving a review, this will help to improve our service!
   utter_deny_review:
     - text: Review draft cancelled

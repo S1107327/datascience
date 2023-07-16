@@ -69,7 +69,7 @@ class ActionShowCuisines(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         mongo_db = MongoDBConnector()
         cuisines = mongo_db.get_cuisines()
-        text_to_display = "There are these cuisines available in our restaurants\n"
+        text_to_display = "There are these cuisines available in our restaurants:\n"
         for cuisine in cuisines:
             text_to_display += f"{cuisine}\n"
         dispatcher.utter_message(text=text_to_display)
@@ -94,9 +94,9 @@ class ActionRestaurantOfCuisine(Action, BaseException):
         mongo_db = MongoDBConnector()
         restaurants, count = mongo_db.get_restaurant_of_cuisine(cuisine)
         if count == 0:
-            dispatcher.utter_message(text=f"There are no restaurants for {cuisine} cuisine in the service")
+            dispatcher.utter_message(text=f"There are no restaurants offering {cuisine} cuisine in the service")
         else:
-            text_to_display = f"Here are the restaurants of {cuisine} cuisine\n"
+            text_to_display = f"Here are the restaurants that offer {cuisine} cuisine\n"
             for restaurant in restaurants:
                 text_to_display += f"{restaurant['name']}\n"
             dispatcher.utter_message(text=text_to_display)
@@ -115,7 +115,7 @@ class ActionRestaurantsOfBorough(Action):
         if len(tracker.latest_message['entities']):
             borough = tracker.latest_message['entities'][0]['value']
         else:
-            dispatcher.utter_message(text="Borough you asked for doesn't exist, please check spelling and retype")
+            dispatcher.utter_message(text="The borough you asked for doesn't exist, please check your spelling and retype")
             return []
         mongo_db = MongoDBConnector()
         restaurants, count = mongo_db.get_restaurant_of_borough(borough)
@@ -211,18 +211,18 @@ class ActionShowActiveReservations(Action):
         reservations = mongo_db.get_client_reservations(client)
         count = len(reservations)
         if count > 0:
-            text_to_display = f"Here are reservations for {client}\n"
+            text_to_display = f"Here are the reservations present for the phone number: {client}\n"
             for reservation in reservations:
                 if int(reservation['people_number']) > 1:
-                    text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                    text_to_display += f"- {reservation['name']} reserved for {reservation['people_number']} people, on {reservation['date']} at {reservation['time']} at the '{reservation['restaurant_name']}' restaurant\n"
                 else:
-                    text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                    text_to_display += f"- {reservation['name']} reserved for {reservation['people_number']} person, on {reservation['date']} at {reservation['time']} at the '{reservation['restaurant_name']}' restaurant\n"
             dispatcher.utter_message(text=text_to_display)
-            dispatcher.utter_message(text="If you want to see your past reservations also, click MORE!",
+            dispatcher.utter_message(text="If you want to also see your past reservations, click MORE!",
                                      buttons=[{"title": "MORE", "payload": f"/reservation_past_list {client}"}])
         else:
-            dispatcher.utter_message(text=f"There are no active reservations for \"{client}\"")
-            dispatcher.utter_message(text="If you want to see your past reservations also, click MORE!",
+            dispatcher.utter_message(text=f"There are no active reservations for the phone number: \"{client}\"")
+            dispatcher.utter_message(text="If you want to also see your past reservations, click MORE!",
                                      buttons=[{"title": "MORE", "payload": f"/reservation_past_list {client}"}])
         return [SlotSet("cache_phone_number", client)]
 
@@ -241,20 +241,20 @@ class ActionShowPastActiveReservations(Action):
         else:
             client = tracker.get_slot("cache_phone_number")
             if client is None:
-                dispatcher.utter_message(text="You cannot access past reservations if you haven't asked for active reservations")
+                dispatcher.utter_message(text="You cannot access past reservations if you haven't asked for active reservations first")
                 return []
         mongo_db = MongoDBConnector()
         reservations = mongo_db.get_client_reservations(client, active=False)
         if len(reservations) > 0:
-            text_to_display = f"Here are past reservations for {client}\n"
+            text_to_display = f"Here are the past reservations present for the phone number: {client}:\n"
             for reservation in reservations:
                 if int(reservation['people_number']) > 1:
-                    text_to_display += f"{reservation['name']} for {reservation['people_number']} people on {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                    text_to_display += f"- {reservation['name']} reserved for {reservation['people_number']} people on {reservation['date']} at {reservation['time']} at the '{reservation['restaurant_name']}' restaurant.\n"
                 else:
-                    text_to_display += f"{reservation['name']} for {reservation['people_number']} person {reservation['date']} at {reservation['time']}\n Restaurant: {reservation['restaurant_name']}\n"
+                    text_to_display += f"- {reservation['name']} reserved for {reservation['people_number']} person on {reservation['date']} at {reservation['time']} at the '{reservation['restaurant_name']}' restaurant.\n"
             dispatcher.utter_message(text=text_to_display)
         else:
-            dispatcher.utter_message(text=f"There are no past reservations for \"{client}\"")
+            dispatcher.utter_message(text=f"There are no past reservations present for the phone number: \"{client}\"!")
         return [SlotSet("cache_phone_number", None)]
 
 class ActionClearFormSlots(Action):
@@ -274,7 +274,7 @@ class ActionShowReservationInfo(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        utter_text = "This are your reservation infos:\n"
+        utter_text = "These are your reservation info:\n"
         utter_text += f"Restaurant: {tracker.get_slot('restaurant_name_reservation')}\n"
         utter_text += f"Number of people: {tracker.get_slot('people_number')}\n"
         utter_text += f"Date: {tracker.get_slot('date')}\n"
@@ -314,7 +314,7 @@ class ValidateReservationForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         mongo_db = MongoDBConnector()
         if not slot_value.isdigit() or not int(slot_value)>0:
-            dispatcher.utter_message(text=f"Sorry but specified people number is not correct or valid.")
+            dispatcher.utter_message(text=f"Sorry, but the specified number of people is not correct or valid.")
             return {"people_number": None}
         return {"people_number": slot_value}
 
@@ -326,7 +326,7 @@ class ValidateReservationForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         if not len(slot_value) == 10:
-            dispatcher.utter_message(text=f"Sorry but specified phone number is not valid! Retry.")
+            dispatcher.utter_message(text=f"Sorry, but the specified phone number is not valid! Retry.")
             return {"phone_number": None}
         return {"phone_number": slot_value}
 
@@ -343,7 +343,7 @@ class ValidateReservationForm(FormValidationAction):
             try:
                 formatted_date = datetime.strptime(slot_value, format).date()
                 if formatted_date < current_date:
-                    dispatcher.utter_message(text="Sorry, reservation date can't be a past date.")
+                    dispatcher.utter_message(text="Sorry, the reservation date can't be a past date.")
                     return {"date":None}
                 else:
                     formatted_date = formatted_date.strftime('%Y-%m-%d')
@@ -400,10 +400,10 @@ class ActionShowReviews(Action):
         restaurant = tracker.get_slot("restaurant_name_review_list")
         mongo_db = MongoDBConnector()
         reviews = mongo_db.get_restaurant_reviews(restaurant)
-        dispatcher.utter_message(text=f"Here are the 5 latest reviews for {restaurant}\n")
+        dispatcher.utter_message(text=f"Here are the 5 latest reviews for {restaurant}:\n")
         for review in reviews:
             dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
-        dispatcher.utter_message(text="Click MORE to read remaining reviews",
+        dispatcher.utter_message(text="Click MORE to read the remaining reviews",
                                  buttons=[{"title": "MORE", "payload": "/show_all_reviews"}])
         return []
 
@@ -420,7 +420,7 @@ class ActionShowAllAfterReviews(Action):
         restaurant = tracker.get_slot("restaurant_name_review_list")
         mongo_db = MongoDBConnector()
         reviews = mongo_db.get_restaurant_reviews(restaurant, limit=False)
-        dispatcher.utter_message(text=f"Here are the remaining reviews for {restaurant}\n")
+        dispatcher.utter_message(text=f"Here are the remaining reviews for {restaurant}:\n")
         for review in reviews[5:]:
             dispatcher.utter_message(text=f"{review['name']} voted {review['score']} in {review['date_review']}\n \"{review['body']}\"")
         return [SlotSet("restaurant_name_review_list", None)]
@@ -470,7 +470,7 @@ class ActionShowReviewInfo(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        utter_text = "This are your review infos:\n"
+        utter_text = "Here are the reviews:\n"
         utter_text += f"Restaurant: {tracker.get_slot('restaurant_name_review')}\n"
         utter_text += f"Text: {tracker.get_slot('review_body')}\n"
         utter_text += f"From: {tracker.get_slot('name_review')}\n"
@@ -533,8 +533,7 @@ class ActionShowSpecificHelp(Action):
                                          \t- Which restaurants offer a specific type of cuisine.\n
                                          \t- Info about a restaurant you're curious of.""")
             case "reserve":
-                dispatcher.utter_message(text="""In order for me to be able to reserve a place for you to eat, 
-                                         I will need some information from you:\n
+                dispatcher.utter_message(text="""In order for me to be able to reserve a place for you to eat, I will need some information from you:\n
                                          \t- In which place you want to go, of course.\n
                                          \t- How many people you want to reserve for.\n
                                          \t- The date of the reservation.\n
@@ -543,8 +542,7 @@ class ActionShowSpecificHelp(Action):
                                          \t- Your name.\n
                                          \t- Your phone number.""")
             case "review":
-                dispatcher.utter_message(text="""To leave a review of your experience in a restaurant 
-                                         I will need from you:\n
+                dispatcher.utter_message(text="""To leave a review of your experience in a restaurant I will need from you:\n
                                          \t- The name of the restaurant you want to leave a review at\n
                                          \t- Your review. Don't be too harsh!\n
                                          \t- Your name\n
